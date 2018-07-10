@@ -1,0 +1,6 @@
+# compiled output
+/dist
+rollup.build.css
+
+# dependencies
+/node_modules

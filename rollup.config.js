@@ -15,7 +15,8 @@ const babelConfig = {
         browsers: ['last 2 versions'],
         ie: 11
       },
-      loose: true
+      loose: true,
+      useBuiltIns: true
     }]
   ]
 };

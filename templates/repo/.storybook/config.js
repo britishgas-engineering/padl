@@ -1,4 +1,5 @@
-import { configure } from '@storybook/html';
+import { configure, getStorybook } from '@storybook/html';
+import '../dist/polyfill.js';
 import '../dist/components.js';
 
 const req = require.context('../src', true, /.*story.js$/);
@@ -9,3 +10,4 @@ function loadStories() {
 }
 
 configure(loadStories, module);
+export { getStorybook };

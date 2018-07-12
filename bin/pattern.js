@@ -3,17 +3,22 @@ const shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
+const parseArgs = require('minimist')
+const args = parseArgs(process.argv.slice(2));
+const command = args._[0];
 
 shell.config.silent = true;
 
 let config;
-let cliPath = path.join(path.dirname(__filename), '..');
+
+const cliPath = path.join(path.dirname(__filename), '..');
 const con = path.join(cliPath, 'node_modules/.bin/concurrently');
 const roll = path.join(cliPath, 'node_modules/.bin/rollup');
-const story = 'node_modules/.bin/start-storybook';
-const wct = 'node_modules/.bin/wct';
 const rollConfig = path.join(cliPath, 'rollup.config.js');
 const rollTestConfig = path.join(cliPath, 'rollup.test.config.js');
+const story = 'node_modules/.bin/start-storybook';
+const story2sketch = 'node_modules/.bin/build-storybook';
+const wct = 'node_modules/.bin/wct';
 
 const errorMessage = (message) => {
   shell.echo(message)
@@ -25,14 +30,14 @@ const successMessage = (message) => {
   shell.exit(0);
 };
 
-const missingArg = (step, message) => {
-  if (!process.argv[step]) {
+const missingArg = (type, message) => {
+  if (!type) {
       errorMessage(message);
   }
 };
 
 const buildFiles = (config, isSilent) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     shell.echo('Cleaning cache...');
     shell.rm('-rf', 'dist');
     shell.echo('Building files...');
@@ -44,7 +49,18 @@ const buildFiles = (config, isSilent) => {
       return resolve();
     });
   });
+};
 
+const buildStorybook = (config) => {
+  return new Promise((resolve) => {
+    shell.echo('Building storybook...');
+    shell.exec(`${story2sketch} -c ${config} -o dist/demo`, (code, stdout, stderr) => {
+      if (stderr) {
+        console.log('err: ', stderr);
+      }
+      return resolve();
+    });
+  });
 };
 
 const serveFiles = (config) => {
@@ -57,9 +73,9 @@ const serveFiles = (config) => {
   shell.echo('http://localhost:9001');
 };
 
-missingArg(2, 'Please tell me what you want me todo!');
+missingArg(command, 'Please tell me what you want me todo!');
 
-if (process.argv[2] === 'test') {
+if (command === 'test') {
   buildFiles(rollConfig).then(() => {
     glob('test/**/*_test*', (err, arr) => {
 
@@ -78,10 +94,18 @@ if (process.argv[2] === 'test') {
   });
 };
 
-if (process.argv[2] === 'new') {
-  missingArg(3, `Please state the library name after '${process.argv[2]}'.`);
+if (command === 'new') {
 
-  const name = process.argv[3].replace(/[^\w\-]/gi, '');
+  missingArg(args._[1], `Please state the library name after '${command}'.`);
+  let type;
+  const name = args._[1].replace(/[^\w\-]/gi, '');
+
+  if (args['type'] === 'polymer' || args['type'] === 'lit' || !args['type']) {
+    type = args['type'] || 'polymer';
+  } else {
+    errorMessage(`Type can only be 'polymer' or 'lit'`);
+  }
+
   const templatePath = path.join(cliPath, 'templates', 'repo');
 
   if (shell.find(name) == '') {
@@ -89,10 +113,19 @@ if (process.argv[2] === 'new') {
     shell.cp('-Rf', `${templatePath}/*`, `${name}/`);
     shell.cp('-Rf', `${templatePath}/.*`, `${name}/`);
 
-    const files = [...shell.ls(`${name}/package.json`), ...shell.ls(`${name}/README.md`)];
+    const files = [
+      ...shell.ls(`${name}/package.json`),
+      ...shell.ls(`${name}/README.md`),
+      ...shell.ls(`${name}/.pattern`)
+    ];
 
     files.forEach((file) => {
       shell.sed('-i', /REPO_NAME/g, name, file);
+      shell.sed('-i', /REPO_TYPE/g, type, file);
+
+      if (type === 'lit') {
+        shell.sed('-i', /@polymer\/polymer.+/, `@polymer/lit-element": "^0.5.2",`, file);
+      }
     });
 
     successMessage(`${name} library has been created. \nRun 'cd ${name} && npm install' to setup ${name}`);
@@ -101,11 +134,23 @@ if (process.argv[2] === 'new') {
   }
 }
 
-if (process.argv[2] === 'build') {
+if (command === 'build') {
   buildFiles(rollConfig);
 }
 
-if (process.argv[2] === 'serve') {
+if (command === 'sketch') {
+  buildFiles(rollConfig, true).then(() => {
+    buildStorybook('.storybook').then(() => {
+      shell.exec('story2sketch --input dist/demo/iframe.html --output stories.asketch.json', (code, stdout, stderr) => {
+        if (stderr) {
+          console.log('err: ', stderr);
+        }
+      });
+    })
+  });
+}
+
+if (command === 'serve') {
   buildFiles(rollTestConfig, true).then(() => {
     serveFiles(rollTestConfig);
   }).catch((e) => {
@@ -113,10 +158,10 @@ if (process.argv[2] === 'serve') {
   });
 }
 
-if (process.argv[2] === 'delete' || process.argv[2] === 'd') {
-  missingArg(3, `Please state the component name after '${process.argv[2]}'.`);
+if (command === 'delete' || command === 'd') {
+  missingArg(args._[1], `Please state the component name after '${command}'.`);
 
-  const name = process.argv[3].replace(/[^\w\-]/gi, '');
+  const name = args._[1].replace(/[^\w\-]/gi, '');
   if (shell.find([`src/${name}`, `test/${name}`]) == '') {
     errorMessage(`Cannot find component '${name}'`);
   }
@@ -130,7 +175,7 @@ if (process.argv[2] === 'delete' || process.argv[2] === 'd') {
   }
 }
 
-if (process.argv[2] === 'generate' || process.argv[2] === 'g') {
+if (command === 'generate' || command === 'g') {
   let type;
 
   try {
@@ -150,17 +195,18 @@ if (process.argv[2] === 'generate' || process.argv[2] === 'g') {
     errorMessage('.pattern type is not right, please use `polymer` or `lit`.');
   }
 
-  missingArg(3, `Please state the component name after '${process.argv[2]}'.`);
+  missingArg(args._[1], `Please state the component name after '${command}'.`);
 
   const templatePath = path.join(cliPath, 'templates', type);
-  const name = process.argv[3];
+  const standardPath = path.join(cliPath, 'templates', 'standard');
+  const name = args._[1];
   const componentName = name.replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => {
     return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
   }).replace(/\s+/g, '').replace(/-/g, '');
 
   if (!name.includes('-')) {
     errorMessage('Component name requires a dash (-).');
-  }
+  };
 
   shell.ls(`src/${name}/component.js`).forEach((file) => {
     errorMessage(`'${name}' component already exists.`);
@@ -169,10 +215,10 @@ if (process.argv[2] === 'generate' || process.argv[2] === 'g') {
   shell.mkdir('-p', [`src/${name}`, `test/${name}`])
 
   shell.cp(path.join(templatePath, 'component.js'), `src/${name}/component.js`);
-  shell.cp(path.join(templatePath, 'story.js'), `src/${name}/story.js`);
-  shell.cp(path.join(templatePath, 'styles.less'), `src/${name}/styles.less`);
-  shell.cp(path.join(templatePath, 'test.html'), `test/${name}/${name}_test.html`);
-  shell.cp(path.join(templatePath, 'test.js'), `test/${name}/${name}_test.js`);
+  shell.cp(path.join(standardPath, 'story.js'), `src/${name}/story.js`);
+  shell.cp(path.join(standardPath, 'styles.less'), `src/${name}/styles.less`);
+  shell.cp(path.join(standardPath, 'test.html'), `test/${name}/${name}_test.html`);
+  shell.cp(path.join(standardPath, 'test.js'), `test/${name}/${name}_test.js`);
 
   const files = [
     ...shell.ls(`src/${name}/component.js`),

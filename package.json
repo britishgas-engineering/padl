@@ -4,9 +4,8 @@
   "description": "Develop pattern libraries with polymer",
   "keywords": [],
   "author": "Jonathan Holt",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "@polymer/polymer": "^3.0.2",
     "@webcomponents/webcomponentsjs": "^2.0.2",
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -14,16 +13,15 @@
     "babelrc-rollup": "^3.0.0",
     "concurrently": "^3.6.0",
     "glob": "^7.1.2",
-    "livereload": "^0.7.0",
+    "minimist": "^1.2.0",
     "rollup": "^0.62.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-less": "^0.1.4",
     "rollup-plugin-multi-entry": "^2.0.2",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-terser": "^1.0.1",
-    "rollup-watch": "^4.3.1",
     "shelljs": "^0.8.2",
-    "wct-browser-legacy": "^1.0.1"
+    "story2sketch": "jholt1/story2sketch#master"
   },
   "bin": {
     "pattern": "bin/pattern.js"

@@ -36,6 +36,7 @@ To create this example:
 ```sh
  npm i -g polymer-pattern
  pattern new hello-world
+ cd hello-world && npm i
  pattern g primary-button
  pattern build
 ```

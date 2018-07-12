@@ -1,8 +1,8 @@
 {
   "name": "polymer-pattern",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Develop pattern libraries with polymer",
-  "keywords": [],
+  "keywords": ["polymer", "lit-element", "pattern", "library"],
   "author": "Jonathan Holt",
   "license": "MIT",
   "dependencies": {

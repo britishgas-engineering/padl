@@ -28,7 +28,7 @@ If we create a `hello-world` pattern library with a `primary-button` web compone
   | | └── primary-button_test.html
   | └── index.html
   └─┬ dist
-    └─ component.min.js
+    └─ components.min.js
 ```
 
 ## How to
@@ -98,10 +98,14 @@ Inside your pattern repo
  pattern sketch
 ```
 
+This will output a `stories.asketch.json` file. You will need to install this sketch plugin [`asketch2sketch.sketchplugin`](https://github.com/brainly/html-sketchapp/releases/download/v3.3.1/asketch2sketch-3-3-1.sketchplugin.zip)
+
 ## Dependencies
 
  This uses a variety of other resources:
 
  - Polymer
+ - Lit Element
  - Storybook
  - Story2sketch
+ - Html-sketchapp

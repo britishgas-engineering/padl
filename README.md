@@ -33,11 +33,11 @@ If we create a `hello-world` pattern library with a `primary-button` web compone
 
 To create this example:
 
-```
-npm i -g polymer-pattern
-pattern new hello-world
-pattern g primary-button
-button build
+```sh
+ npm i -g polymer-pattern
+ pattern new hello-world
+ pattern g primary-button
+ button build
 ```
 
 ## How to

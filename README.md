@@ -37,7 +37,7 @@ To create this example:
  npm i -g polymer-pattern
  pattern new hello-world
  pattern g primary-button
- button build
+ pattern build
 ```
 
 ## How to

@@ -31,6 +31,15 @@ If we create a `hello-world` pattern library with a `primary-button` web compone
     └─ components.min.js
 ```
 
+To create this example:
+
+```
+npm i -g polymer-pattern
+pattern new hello-world
+pattern g primary-button
+button build
+```
+
 ## How to
 
 ### Create a new pattern library
@@ -71,6 +80,16 @@ Inside your pattern repo
  ```
   pattern d [component-name]
  ```
+
+### Build your library
+
+Inside your pattern repo
+
+```
+ pattern build
+```
+
+In your `dist` folder will find the `components.min.js`
 
 ### Serve a component
 

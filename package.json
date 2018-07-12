@@ -1,8 +1,13 @@
 {
   "name": "polymer-pattern",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Develop pattern libraries with polymer",
-  "keywords": ["polymer", "lit-element", "pattern", "library"],
+  "keywords": [
+    "polymer",
+    "lit-element",
+    "pattern",
+    "library"
+  ],
   "author": "Jonathan Holt",
   "license": "MIT",
   "dependencies": {
@@ -21,7 +26,7 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-terser": "^1.0.1",
     "shelljs": "^0.8.2",
-    "story2sketch": "jholt1/story2sketch#master"
+    "story2sketch": "github:jholt1/story2sketch#compile"
   },
   "bin": {
     "pattern": "bin/pattern.js"

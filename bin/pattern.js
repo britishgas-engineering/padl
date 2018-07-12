@@ -14,10 +14,11 @@ let config;
 const cliPath = path.join(path.dirname(__filename), '..');
 const con = path.join(cliPath, 'node_modules/.bin/concurrently');
 const roll = path.join(cliPath, 'node_modules/.bin/rollup');
+const story2sketch = path.join(cliPath, 'node_modules/.bin/story2sketch');
 const rollConfig = path.join(cliPath, 'rollup.config.js');
 const rollTestConfig = path.join(cliPath, 'rollup.test.config.js');
 const story = 'node_modules/.bin/start-storybook';
-const story2sketch = 'node_modules/.bin/build-storybook';
+const buildStory = 'node_modules/.bin/build-storybook';
 const wct = 'node_modules/.bin/wct';
 
 const errorMessage = (message) => {
@@ -54,7 +55,7 @@ const buildFiles = (config, isSilent) => {
 const buildStorybook = (config) => {
   return new Promise((resolve) => {
     shell.echo('Building storybook...');
-    shell.exec(`${story2sketch} -c ${config} -o dist/demo`, (code, stdout, stderr) => {
+    shell.exec(`${buildStory} -c ${config} -o dist/demo`, (code, stdout, stderr) => {
       if (stderr) {
         console.log('err: ', stderr);
       }
@@ -141,7 +142,7 @@ if (command === 'build') {
 if (command === 'sketch') {
   buildFiles(rollConfig, true).then(() => {
     buildStorybook('.storybook').then(() => {
-      shell.exec('story2sketch --input dist/demo/iframe.html --output stories.asketch.json', (code, stdout, stderr) => {
+      shell.exec(`${story2sketch} --input dist/demo/iframe.html --output stories.asketch.json`, (code, stdout, stderr) => {
         if (stderr) {
           console.log('err: ', stderr);
         }

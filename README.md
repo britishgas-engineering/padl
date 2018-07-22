@@ -102,6 +102,14 @@ In your `dist` folder will find the `components.min.js`
 
  This will generate a storybook of all your component stories at `localhost:9001`
 
+ #### Options
+
+  - port: 8080 (default: 9001)
+
+  ```
+   pattern serve --port 8080
+  ```
+
 ### Test your components
 
  Inside your pattern repo

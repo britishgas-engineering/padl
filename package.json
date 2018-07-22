@@ -33,7 +33,9 @@
   "scripts": {
     "build": "./node_modules/.bin/babel bin --out-dir build",
     "prepublish": "npm run build",
-    "test": "ava"
+    "test": "ava",
+    "test:watch": "ava --watch",
+    "test:coverage": "nyc ava"
   },
   "devDependencies": {
     "ava": "1.0.0-beta.6",

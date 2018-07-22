@@ -14,7 +14,6 @@
     "@webcomponents/webcomponentsjs": "^2.0.2",
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.7.0",
     "babelrc-rollup": "^3.0.0",
     "concurrently": "^3.6.0",
     "glob": "^7.1.2",
@@ -29,12 +28,21 @@
     "story2sketch": "github:jholt1/story2sketch#compile"
   },
   "bin": {
-    "pattern": "bin/pattern.js"
+    "pattern": "build/pattern.js"
   },
   "scripts": {
+    "build": "./node_modules/.bin/babel bin --out-dir build",
+    "prepublish": "npm run build",
     "test": "ava"
   },
   "devDependencies": {
-    "ava": "1.0.0-beta.6"
+    "ava": "1.0.0-beta.6",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }

@@ -83,14 +83,14 @@ const buildStorybook = (config) => {
   });
 };
 
-const serveFiles = (config) => {
+const serveFiles = (config, port) => {
   shell.echo('Serving app...');
-  shell.exec(`${concurrently} -p -n -r --kill-others "${storybookStart} -p 9001 -c .storybook --quiet" "${rollup} -c ${config} -w"`, (code, stdout, stderr) => {
+  shell.exec(`${concurrently} -p -n -r --kill-others "${storybookStart} -p ${port} -c .storybook --quiet" "${rollup} -c ${config} -w"`, (code, stdout, stderr) => {
     if (stderr) {
       console.log('err: ', stderr);
     }
   });
-  shell.echo('http://localhost:9001');
+  shell.echo(`http://localhost:${port}`);
 };
 
 export {

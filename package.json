@@ -24,6 +24,7 @@
     "rollup-plugin-multi-entry": "^2.0.2",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-terser": "^1.0.1",
+    "rollup-watch": "^4.3.1",
     "shelljs": "^0.8.2",
     "story2sketch": "github:jholt1/story2sketch#compile"
   },

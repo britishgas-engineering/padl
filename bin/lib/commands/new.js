@@ -35,7 +35,7 @@ export default (args) => {
     const files = [
       ...shell.ls(`${name}/package.json`),
       ...shell.ls(`${name}/README.md`),
-      ...shell.ls(`${name}/.pattern`)
+      ...shell.ls(`${name}/.padl`)
     ];
 
     files.forEach((file) => {

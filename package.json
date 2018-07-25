@@ -1,12 +1,13 @@
 {
-  "name": "polymer-pattern",
-  "version": "0.0.3",
-  "description": "Develop pattern libraries with polymer",
+  "name": "padl",
+  "version": "0.0.4",
+  "description": "Develop pattern libraries with polymer or lit",
   "keywords": [
     "polymer",
     "lit-element",
     "pattern",
-    "library"
+    "library",
+    "design"
   ],
   "author": "Jonathan Holt",
   "license": "MIT",
@@ -29,7 +30,7 @@
     "story2sketch": "github:jholt1/story2sketch#compile"
   },
   "bin": {
-    "pattern": "build/pattern.js"
+    "padl": "build/pattern.js"
   },
   "scripts": {
     "build": "./node_modules/.bin/babel bin --out-dir build",

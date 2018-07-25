@@ -19,7 +19,7 @@ export default (args) => {
   const command = args._[0];
 
   try {
-    config = JSON.parse(fs.readFileSync('.pattern').toString());
+    config = JSON.parse(fs.readFileSync('.padl').toString());
   }
   catch (e) {
     errorMessage('Missing config, is this the right folder?');
@@ -32,7 +32,7 @@ export default (args) => {
   if (config.type === 'polymer' || config.type === 'lit') {
     type = config.type;
   } else {
-    errorMessage('.pattern type is not right, please use `polymer` or `lit`.');
+    errorMessage('.padl type is not right, please use `polymer` or `lit`.');
   }
 
   missingArg(args._[1], `Please state the component name after '${command}'.`);

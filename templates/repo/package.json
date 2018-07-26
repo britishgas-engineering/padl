@@ -5,9 +5,9 @@
   "keywords": ["web components", "polymer", "pattern library"],
   "license": "MIT",
   "scripts": {
-    "test": "pattern test",
-    "serve": "pattern serve",
-    "build": "pattern build"
+    "test": "padl test",
+    "serve": "padl serve",
+    "build": "padl build"
   },
   "devDependencies": {
     "@polymer/polymer": "^3.0.2",
@@ -17,7 +17,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.7.0",
     "moment": "2.22.2",
-    "polymer-pattern": "0.0.1",
+    "padl": "0.0.5",
     "wct-browser-legacy": "^1.0.1",
     "web-component-tester": "^6.7.1"
   }

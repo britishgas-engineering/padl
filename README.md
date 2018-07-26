@@ -1,4 +1,4 @@
-# Padl
+# PaDL - Pattern Design Library System
 
 ## Installation
 

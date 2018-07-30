@@ -18,6 +18,9 @@ const babelConfig = {
       loose: true,
       useBuiltIns: true
     }]
+  ],
+  plugins: [
+    'external-helpers'
   ]
 };
 
@@ -34,6 +37,7 @@ const plugins = [
 
 const es5 = path.join(cliPath, 'node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js');
 const webBundle = path.join(cliPath, 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js');
+const runtime = path.join(cliPath, 'node_modules/regenerator-runtime/runtime.js');
 
 export default [
   {
@@ -48,7 +52,7 @@ export default [
     plugins: [multiEntry()]
   },
   {
-    input: 'src/**/component.js',
+    input: [`${runtime}`,'src/**/component.js'],
     output: {
       name: 'polymerElement',
       format: 'esm',

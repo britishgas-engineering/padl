@@ -25,7 +25,7 @@ const babelConfig = {
 };
 
 const plugins = [
-  resolve(),
+  resolve({jsnext: true}),
   less(),
   multiEntry(),
   babel(babelrc({

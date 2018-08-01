@@ -118,6 +118,47 @@ In your `dist` folder will find the `components.min.js`
   padl test
  ```
 
+ #### Options
+
+  - persistent (default: false)
+  - headless (default: false)
+
+##### Persistent
+
+  ```
+   padl test --persistent
+   padl test -p
+  ```
+
+##### Headless
+
+ For headless testing to work you need a config file in your project root called `wct.headless.config.json`.
+
+ An example of how this file could be:
+
+  ```json
+  {
+    "plugins": {
+      "local": {
+        "browsers": ["chrome", "firefox"],
+        "browserOptions": {
+          "chrome": [
+            "headless"
+          ],
+          "firefox": [
+            "-headless"
+          ]
+        }
+      }
+    }
+  }
+  ```
+
+  ```
+   padl test --headless
+   padl test -h
+  ```
+
 ### Create sketch files of components
 
 Inside your pattern library

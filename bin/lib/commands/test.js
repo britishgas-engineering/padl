@@ -38,9 +38,8 @@ export default (args) => {
 
     write.sync('dist/text-fixtures.js', fixtureContent);
     shell.echo('Running tests...');
-    shell.echo(`${wct} --npm ${isHeadless ? '--skip-plugin=local' : ''} ${isPersistent ? '-p' : ''}`);
-    shell.exec(`${wct} --npm ${isHeadless ? '--skip-plugin=local' : ''} ${isPersistent ? '-p' : ''}`, (code, stdout, stderr) => {
-        console.log(code === 0 ? stdout : stderr);
+    shell.exec(`${wct} --npm ${isHeadless ? `--config-file wct.headless.config.json` : ''} ${isPersistent ? '-p' : ''}`, (code, stdout, stderr) => {
+        console.log(code === 0 ? stdout : stdout + stderr);
       });
   }).catch((e) => {
     shell.echo(`error: ${e}`);

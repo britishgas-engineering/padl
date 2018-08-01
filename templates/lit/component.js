@@ -19,7 +19,8 @@ class COMPONENT_NAME extends LitElement {
   _render({prop1}) {
     return html([`
       <style>${styles}</style>
-      <h2>Hello ${prop1}! <slot></slot></h2>
+      <h2>Hello ${prop1}!</h2>
+      <p><slot></slot></p>
     `]);
   }
 

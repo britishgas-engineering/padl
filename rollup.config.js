@@ -20,7 +20,8 @@ const babelConfig = {
     }]
   ],
   plugins: [
-    'external-helpers'
+    'external-helpers',
+    'transform-object-rest-spread'
   ]
 };
 

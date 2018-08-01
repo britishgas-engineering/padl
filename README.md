@@ -118,6 +118,21 @@ In your `dist` folder will find the `components.min.js`
   padl test
  ```
 
+ #### Options
+
+  - persistent (default: false)
+  - headless (default: false)
+
+  ```
+   padl test --persistent
+   padl test -p
+  ```
+
+  ```
+   padl test --headless
+   padl test -h
+  ```
+
 ### Create sketch files of components
 
 Inside your pattern library

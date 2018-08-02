@@ -1,4 +1,6 @@
 import test from 'ava';
+import sinon from 'sinon';
+import shell from 'shelljs';
 
 import * as util from '../build/lib/util';
 
@@ -20,6 +22,30 @@ test('check `types` commands', (t) => {
 	t.is(util.types.g, 'generate');
 });
 
-// test('check `errorMessage`', (t) => {
-// 	t.is(util.successMessage('sorry'), 'sorry');
-// });
+test('check `successMessage`', (t) => {
+	const message = 'successful';
+	const echo = sinon.stub(shell, 'echo');
+	const exit = sinon.stub(shell, 'exit');
+
+	util.successMessage(message);
+
+	t.truthy(echo.called);
+	t.deepEqual(echo.args[0], [message], 'Message is passed to echo');
+	t.truthy(exit.called);
+	t.deepEqual(exit.args[0], [0], 'Exits with `0`');
+	sinon.restore();
+});
+
+test('check `errorMessage`', (t) => {
+	const message = 'you done something wrong :(';
+	const echo = sinon.stub(shell, 'echo');
+	const exit = sinon.stub(shell, 'exit');
+
+	util.errorMessage(message);
+
+	t.truthy(echo.called);
+	t.deepEqual(echo.args[0], [message], 'Message is passed to echo');
+	t.truthy(exit.called);
+	t.deepEqual(exit.args[0], [1], 'Exits with `1`');
+	sinon.restore();
+});

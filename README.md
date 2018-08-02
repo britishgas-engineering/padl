@@ -1,15 +1,15 @@
-# Polymer-pattern
+# PaDL - Pattern Design Library System
 
 ## Installation
 
 ```
-npm i -g polymer-pattern
+npm i -g padl
 ```
 
 ## About
 
  This is a project that allows you to easily create pattern libraries, with pure webcomponents using polymer (or lit). It bundles
- all of your components together with the needed polyfills so that you only need one js file (`dist/components.min.js`).
+ all of your components together with the needed polyfills so that you only require one js file (`dist/components.min.js`).
 
 ### Example structure
 
@@ -34,11 +34,11 @@ If we create a `hello-world` pattern library with a `primary-button` web compone
 To create this example:
 
 ```sh
- npm i -g polymer-pattern
- pattern new hello-world
+ npm i -g padl
+ padl new hello-world
  cd hello-world && npm i
- pattern g primary-button
- pattern build
+ padl g primary-button
+ padl build
 ```
 
 ## How to
@@ -46,7 +46,7 @@ To create this example:
 ### Create a new pattern library
 
 ```
-  pattern new [name]
+  padl new [name]
 ```
 
 #### Options
@@ -54,10 +54,10 @@ To create this example:
  - type: polymer, lit (default: polymer)
 
  ```
-  pattern new [name] --type lit
+  padl new [name] --type lit
  ```
 
- After creating a new pattern you can:
+ After creating a new pattern library you can:
 
  ```
   cd [name] && npm i
@@ -65,57 +65,106 @@ To create this example:
 
 ### Create a new component
 
- Inside your pattern repo
+ Inside your pattern library
 
  ```
-  pattern g [component-name]
+  padl g [component-name]
  ```
 
- This will create a polymer or lit component (based on your `.pattern` type).
+ This will create a polymer or lit component (based on your `.padl` type).
  It will also generate the `story.js`, `styles.less` and the test files.
 
 ### Delete a component
 
-Inside your pattern repo
+Inside your pattern library
 
  ```
-  pattern d [component-name]
+  padl d [component-name]
  ```
 
 ### Build your library
 
-Inside your pattern repo
+Inside your pattern library
 
 ```
- pattern build
+ padl build
 ```
 
 In your `dist` folder will find the `components.min.js`
 
 ### Serve a component
 
- Inside your pattern repo
+ Inside your pattern library
 
  ```
-  pattern serve
+  padl serve
  ```
 
  This will generate a storybook of all your component stories at `localhost:9001`
 
+ #### Options
+
+  - port: 8080 (default: 9001)
+
+  ```
+   padl serve --port 8080
+  ```
+
 ### Test your components
 
- Inside your pattern repo
+ Inside your pattern library
 
  ```
-  pattern test
+  padl test
  ```
+
+ #### Options
+
+  - persistent (default: false)
+  - headless (default: false)
+
+##### Persistent
+
+  ```
+   padl test --persistent
+   padl test -p
+  ```
+
+##### Headless
+
+ For headless testing to work you need a config file in your project root called `wct.headless.config.json`.
+
+ An example of how this file could be:
+
+  ```json
+  {
+    "plugins": {
+      "local": {
+        "browsers": ["chrome", "firefox"],
+        "browserOptions": {
+          "chrome": [
+            "headless"
+          ],
+          "firefox": [
+            "-headless"
+          ]
+        }
+      }
+    }
+  }
+  ```
+
+  ```
+   padl test --headless
+   padl test -h
+  ```
 
 ### Create sketch files of components
 
-Inside your pattern repo
+Inside your pattern library
 
 ```
- pattern sketch
+ padl sketch
 ```
 
 This will output a `stories.asketch.json` file. You will need to install this sketch plugin [`asketch2sketch.sketchplugin`](https://github.com/brainly/html-sketchapp/releases/download/v3.3.1/asketch2sketch-3-3-1.sketchplugin.zip)

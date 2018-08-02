@@ -1,12 +1,13 @@
 {
-  "name": "polymer-pattern",
-  "version": "0.0.3",
-  "description": "Develop pattern libraries with polymer",
+  "name": "padl",
+  "version": "0.0.5",
+  "description": "Develop pattern libraries with polymer or lit",
   "keywords": [
     "polymer",
     "lit-element",
     "pattern",
-    "library"
+    "library",
+    "design"
   ],
   "author": "Jonathan Holt",
   "license": "MIT",
@@ -18,17 +19,19 @@
     "concurrently": "^3.6.0",
     "glob": "^7.1.2",
     "minimist": "^1.2.0",
+    "regenerator-runtime": "^0.12.0",
     "rollup": "^0.62.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-less": "^0.1.4",
     "rollup-plugin-multi-entry": "^2.0.2",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-terser": "^1.0.1",
+    "rollup-watch": "^4.3.1",
     "shelljs": "^0.8.2",
     "story2sketch": "github:jholt1/story2sketch#compile"
   },
   "bin": {
-    "pattern": "build/pattern.js"
+    "padl": "build/pattern.js"
   },
   "scripts": {
     "build": "./node_modules/.bin/babel bin --out-dir build",
@@ -40,8 +43,10 @@
   "devDependencies": {
     "ava": "1.0.0-beta.6",
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "sinon": "^6.1.4"
+    "sinon": "^6.1.4",
+    "write": "^1.0.3"
   },
   "babel": {
     "presets": [

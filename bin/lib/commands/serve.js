@@ -9,8 +9,10 @@ const {
 const { rollupServeConfig } = CONSTANTS;
 
 export default (args) => {
+  const port = args.port || 9001
+
   buildFiles(rollupServeConfig, true).then(() => {
-    serveFiles(rollupServeConfig);
+    serveFiles(rollupServeConfig, port);
   }).catch((e) => {
     shell.echo(`Error: ${e}`);
   });

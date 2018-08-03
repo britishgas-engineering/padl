@@ -45,8 +45,22 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "nyc": "^12.0.2",
     "sinon": "^6.1.4",
     "write": "^1.0.3"
+  },
+  "ava": {
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "build",
+      "test"
+    ]
   },
   "babel": {
     "presets": [

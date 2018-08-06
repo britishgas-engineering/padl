@@ -2,6 +2,7 @@ import babel from 'rollup-plugin-babel';
 import babelrc from 'babelrc-rollup';
 import resolve from 'rollup-plugin-node-resolve';
 import multiEntry from 'rollup-plugin-multi-entry';
+import livereload from 'rollup-plugin-livereload'
 import less from 'rollup-plugin-less';
 import path from 'path';
 
@@ -26,6 +27,10 @@ const babelConfig = {
 
 const plugins = [
   resolve({jsnext: true}),
+  livereload({
+    watch: 'src',
+    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css']
+  }),
   less(),
   multiEntry(),
   babel(babelrc({

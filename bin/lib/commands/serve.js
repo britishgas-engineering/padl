@@ -6,12 +6,12 @@ const {
   CONSTANTS
 } = util;
 
-const { rollupServeConfig } = CONSTANTS;
+const { rollupConfig, rollupServeConfig } = CONSTANTS;
 
 export default (args) => {
   const port = args.port || 9001
 
-  buildFiles(rollupServeConfig, true).then(() => {
+  buildFiles(rollupConfig, true).then(() => {
     serveFiles(rollupServeConfig, port);
   }).catch((e) => {
     shell.echo(`Error: ${e}`);

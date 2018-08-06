@@ -11,6 +11,10 @@ import * as util from '../bin/lib/util';
  sinon after each test
  */
 
+ test.before((t) => {
+	 t.context.cliPath = path.join(path.dirname(__filename), '..');
+ });
+
 test('exists', (t) => {
 	t.truthy(shell.config.silent, true);
 });
@@ -92,8 +96,7 @@ test('check `buildFiles`', (t) => {
 	const echo = sinon.stub(shell, 'echo');
 	const rm = sinon.stub(shell, 'rm');
 	const exec = sinon.stub(shell, 'exec');
-	const cliPath = path.join(path.dirname(__filename), '..');
-	const rollup = path.join(cliPath, 'node_modules/.bin/rollup');
+	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
 
 	util.buildFiles(config, true);
 
@@ -125,9 +128,8 @@ test('check `serveFiles`', (t) => {
 	const config = 'rollup.config.js';
 	const echo = sinon.stub(shell, 'echo');
 	const exec = sinon.stub(shell, 'exec');
-	const cliPath = path.join(path.dirname(__filename), '..');
-	const concurrently = path.join(cliPath, 'node_modules/.bin/concurrently');
-	const rollup = path.join(cliPath, 'node_modules/.bin/rollup');
+	const concurrently = path.join(t.context.cliPath, 'node_modules/.bin/concurrently');
+	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
 
 	util.serveFiles(config, 9000);
 

@@ -1,5 +1,7 @@
 # PaDL - Pattern Design Library System
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/britishgas-engineering/padl.svg)](https://greenkeeper.io/)
+
 ## Installation
 
 ```

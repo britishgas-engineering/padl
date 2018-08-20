@@ -2,6 +2,10 @@
   "name": "padl",
   "version": "0.0.5",
   "description": "Develop pattern libraries with polymer or lit",
+  "homepage": "https://github.com/britishgas-engineering/padl",
+  "bug": {
+    "url": "https://github.com/britishgas-engineering/padl/issues"
+  },
   "keywords": [
     "polymer",
     "lit-element",

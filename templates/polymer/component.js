@@ -9,7 +9,8 @@ class COMPONENT_NAME extends PolymerElement {
   static get template() {
     return html([`
       <style>${styles}</style>
-      <h2>Hello [[prop1]]! <slot></slot></h2>
+      <h2>Hello [[prop1]]!</h2>
+      <p><slot></slot></p>
     `]);
   }
   static get properties() {

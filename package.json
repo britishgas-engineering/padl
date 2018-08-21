@@ -2,6 +2,10 @@
   "name": "padl",
   "version": "0.0.5",
   "description": "Develop pattern libraries with polymer or lit",
+  "homepage": "https://github.com/britishgas-engineering/padl",
+  "bug": {
+    "url": "https://github.com/britishgas-engineering/padl/issues"
+  },
   "keywords": [
     "polymer",
     "lit-element",
@@ -12,15 +16,14 @@
   "author": "Jonathan Holt",
   "license": "MIT",
   "dependencies": {
-    "@webcomponents/webcomponentsjs": "^2.0.2",
-    "babel-core": "^6.26.3",
+    "@webcomponents/webcomponentsjs": "^2.0.4",
     "babel-plugin-external-helpers": "^6.22.0",
     "babelrc-rollup": "^3.0.0",
-    "concurrently": "^3.6.0",
+    "concurrently": "^3.6.1",
     "glob": "^7.1.2",
     "minimist": "^1.2.0",
-    "regenerator-runtime": "^0.12.0",
-    "rollup": "^0.62.0",
+    "regenerator-runtime": "^0.12.1",
+    "rollup": "^0.64.1",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-less": "^0.1.4",
     "rollup-plugin-livereload": "^0.6.0",

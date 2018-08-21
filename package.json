@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Develop pattern libraries with polymer or lit",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {
@@ -32,7 +32,8 @@
     "rollup-plugin-terser": "^1.0.1",
     "rollup-watch": "^4.3.1",
     "shelljs": "^0.8.2",
-    "story2sketch": "github:jholt1/story2sketch#compile"
+    "story2sketch": "github:jholt1/story2sketch#compile",
+    "write": "^1.0.3"
   },
   "bin": {
     "padl": "build/pattern.js"
@@ -46,8 +47,7 @@
     "ava": "1.0.0-beta.6",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "write": "^1.0.3"
+    "babel-preset-env": "^1.7.0"
   },
   "babel": {
     "presets": [

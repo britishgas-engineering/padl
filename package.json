@@ -41,13 +41,30 @@
   "scripts": {
     "build": "./node_modules/.bin/babel bin --out-dir build",
     "prepublish": "npm run build",
-    "test": "ava"
+    "test": "ava",
+    "test:watch": "ava --watch",
+    "test:coverage": "nyc ava"
   },
   "devDependencies": {
     "ava": "1.0.0-beta.6",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "nyc": "^12.0.2",
+    "sinon": "^6.1.4"
+  },
+  "ava": {
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "build",
+      "test"
+    ]
   },
   "babel": {
     "presets": [

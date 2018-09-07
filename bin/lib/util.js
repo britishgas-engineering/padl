@@ -83,9 +83,17 @@ const buildStorybook = (config) => {
   });
 };
 
-const serveFiles = (config, port) => {
+const serveFiles = (config, port, options) => {
+  let commands = `${concurrently} -p -n -r --kill-others "${storybookStart} -p ${port} -c .storybook -s ./dist" "${rollup} --environment ${options.environments} -c ${config} -w"`;
+
+  if (options.commands) {
+    commands += ` "${options.commands}"`;
+  };
+
+  console.log(commands);
+
   shell.echo('Serving app...');
-  shell.exec(`${concurrently} -p -n -r --kill-others "${storybookStart} -p ${port} -c .storybook --quiet" "${rollup} -c ${config} -w"`, (code, stdout, stderr) => {
+  shell.exec(commands, (code, stdout, stderr) => {
     if (stderr) {
       console.log('err: ', stderr);
     }

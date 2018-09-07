@@ -25,11 +25,20 @@ const babelConfig = {
   ]
 };
 
+
+let dir_watch = ['src'];
+
+if (process.env.WATCH_DIR) {
+  process.env.WATCH_DIR.split(',').forEach((dir) => dir_watch.push(dir));
+};
+
+
 const plugins = [
   resolve({jsnext: true}),
   livereload({
-    watch: 'src',
-    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css']
+    watch: dir_watch,
+    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
+    applyCSSLive: true
   }),
   less(),
   multiEntry(),

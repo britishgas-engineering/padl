@@ -90,8 +90,6 @@ const serveFiles = (config, port, options) => {
     commands += ` "${options.commands}"`;
   };
 
-  console.log(commands);
-
   shell.echo('Serving app...');
   shell.exec(commands, (code, stdout, stderr) => {
     if (stderr) {

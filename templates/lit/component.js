@@ -6,7 +6,7 @@ class COMPONENT_NAME extends LitElement {
   // Public property API that triggers re-render (synced with attributes)
   static get properties() {
     return {
-      prop1: String
+      prop1: {type: String}
     };
   }
 
@@ -16,10 +16,10 @@ class COMPONENT_NAME extends LitElement {
   }
 
   // Render method should return a `TemplateResult` using the provided lit-html `html` tag function
-  _render({prop1}) {
+  _render() {
     return html([`
       <style>${styles}</style>
-      <h2>Hello ${prop1}!</h2>
+      <h2>Hello ${this.prop1}!</h2>
       <p><slot></slot></p>
     `]);
   }

@@ -137,6 +137,6 @@ test('check `serveFiles`', (t) => {
 	t.truthy(exec.called);
 	t.deepEqual(echo.args[0], ['Serving app...']);
 	t.deepEqual(echo.args[1], ['http://localhost:9000']);
-	t.deepEqual(exec.args[0][0], `${concurrently} -p -n -r --kill-others "node_modules/.bin/start-storybook -p 9000 -c .storybook --quiet" "${rollup} -c ${config} -w"`);
+	t.deepEqual(exec.args[0][0], `${concurrently} -p -n -r --kill-others "node_modules/.bin/start-storybook -p 9000 -c .storybook -s ./dist" "${rollup} -c ${config} -w"`);
 	sinon.restore();
 });

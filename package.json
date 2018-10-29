@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "0.1.5-alpha.3",
+  "version": "0.2.0",
   "description": "Develop pattern libraries with polymer or lit",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {
@@ -29,7 +29,7 @@
     "regenerator-runtime": "^0.12.1",
     "rollup": "^0.64.1",
     "rollup-plugin-babel": "^3.0.7",
-    "rollup-plugin-less": "^0.1.4",
+    "rollup-plugin-less": "github:jholt1/rollup-plugin-less#compile",
     "rollup-plugin-livereload": "^0.6.0",
     "rollup-plugin-multi-entry": "^2.0.2",
     "rollup-plugin-node-resolve": "^3.3.0",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "ava": "1.0.0-beta.6",
-    "nyc": "^12.0.2",
+    "nyc": "^13.1.0",
     "sinon": "^6.1.4"
   },
   "ava": {

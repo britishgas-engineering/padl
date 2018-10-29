@@ -13,27 +13,26 @@ let { rollupConfig, rollupServeConfig } = CONSTANTS;
 export default (args) => {
   const port = args.port || 9001;
   let options = {};
-  let config;
-  options.environments = 'BUILD:serve';
+  options.environment = {};
+  options.environments.BUILD = 'serve';
 
-  try {
-    config = JSON.parse(fs.readFileSync('.padl').toString());
-  }
-  catch (e) {
-    errorMessage('Missing config, is this the right folder?');
-  }
-
-  if (config && config.watch) {
-    if (config.watch.watchGlob) {
-      options.environments += `,WATCH_DIR:${config.watch.watchGlob}`;
+  if (args.config && args.config.watch) {
+    if (args.config.watch.watchGlob) {
+      const watchGlob = args.config.watch.watchGlob.join();
+      options.environments.WATCH_DIR = watchGlob;
     }
 
-    if (config.watch.commands) {
-      options.commands = config.watch.commands
+    if (args.config.watch.commands) {
+      const watchCommands = args.config.watch.commands.join();
+      options.commands = watchCommands;
     }
   }
 
-  buildFiles(rollupConfig, true).then(() => {
+  if (args.config && args.config.static) {
+    options.static = args.config.static;
+  };
+
+  buildFiles(rollupConfig, true, options).then(() => {
     serveFiles(rollupServeConfig, port, options);
   }).catch((e) => {
     shell.echo(`Error: ${e}`);

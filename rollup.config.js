@@ -5,6 +5,7 @@ import { terser } from "rollup-plugin-terser";
 import multiEntry from 'rollup-plugin-multi-entry';
 import less from 'rollup-plugin-less';
 import path from 'path';
+import fs from 'fs';
 
 let cliPath = path.join(path.dirname(__filename));
 
@@ -36,9 +37,17 @@ const plugins = [
   }))
 ];
 
-const es5 = path.join(cliPath, 'node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js');
-const webBundle = path.join(cliPath, 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js');
-const runtime = path.join(cliPath, 'node_modules/regenerator-runtime/runtime.js');
+const es5Module = 'node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
+const webBundleModule = 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js';
+const runtimeModule = 'node_modules/regenerator-runtime/runtime.js';
+
+const es5Path = path.join(cliPath, es5Module);
+const webBundlePath = path.join(cliPath, webBundleModule);
+const runtimePath = path.join(cliPath, runtimeModule);
+
+const es5 = fs.existsSync(es5Path) ? es5Path : es5Module;
+const webBundle = fs.existsSync(webBundlePath) ? webBundlePath : webBundleModule;
+const runtime = fs.existsSync(runtimePath) ? runtimePath : webBundleModule;
 
 export default [
   {

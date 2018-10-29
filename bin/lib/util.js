@@ -105,11 +105,13 @@ const buildStorybook = (config) => {
 const serveFiles = (config, port, options = {}) => {
   const storybook = `${storybookStart} -p ${port} -c .storybook -s ./dist`;
   const rollupEnv = options.environments ? Object.keys(options.environments).map(env => `${env}:${options.environments[env]}`).join() : '';
-  
+
   let commands = `${concurrently} -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? `--environment ${rollupEnv}` : ''} -c ${config} -w"`;
 
   if (options && options.commands) {
-    commands += ` "${options.commands}"`;
+    options.commands.forEach((command) => {
+      commands += ` "${command}"`;
+    });
   };
 
   shell.echo('Serving app...');

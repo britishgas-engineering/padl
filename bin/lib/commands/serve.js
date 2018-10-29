@@ -8,7 +8,7 @@ const {
   CONSTANTS
 } = util;
 
-let { rollupConfig, rollupServeConfig } = CONSTANTS;
+const { rollupConfig, rollupServeConfig } = CONSTANTS;
 
 export default (args) => {
   const port = args.port || 9001;
@@ -23,7 +23,7 @@ export default (args) => {
     }
 
     if (args.config.watch.commands) {
-      const watchCommands = args.config.watch.commands.join();
+      const watchCommands = args.config.watch.commands;
       options.commands = watchCommands;
     }
   }

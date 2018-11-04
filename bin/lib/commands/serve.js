@@ -10,10 +10,10 @@ const {
 
 const { rollupConfig, rollupServeConfig } = CONSTANTS;
 
-export default (args) => {
-  const port = args.port || 9001;
+export default (args = {}) => {
+  const port = args && args.port || 9001;
   let options = {};
-  options.environment = {};
+  options.environments = {};
   options.environments.BUILD = 'serve';
 
   if (args.config && args.config.watch) {

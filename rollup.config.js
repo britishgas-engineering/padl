@@ -49,6 +49,13 @@ const es5 = fs.existsSync(es5Path) ? es5Path : es5Module;
 const webBundle = fs.existsSync(webBundlePath) ? webBundlePath : webBundleModule;
 const runtime = fs.existsSync(runtimePath) ? runtimePath : webBundleModule;
 
+const warning = {
+  onwarn(warning, warn) {
+    if (warning.code === 'THIS_IS_UNDEFINED') return;
+    warn(warning);
+  }
+};
+
 export default [
   {
     input: [
@@ -59,7 +66,8 @@ export default [
       file: 'dist/polyfill.js',
       format: 'esm'
     },
-    plugins: [multiEntry()]
+    plugins: [multiEntry()],
+    ...warning
   },
   {
     input: [`${runtime}`,'src/**/component.js'],
@@ -68,7 +76,8 @@ export default [
       format: 'esm',
       file: 'dist/components.js'
     },
-    plugins
+    plugins,
+    ...warning
   },
   {
     input: ['dist/polyfill.js', 'dist/components.js'],
@@ -77,7 +86,8 @@ export default [
       format: 'esm',
       file: 'dist/components.min.js'
     },
-    plugins: [multiEntry(), terser()]
+    plugins: [multiEntry(), terser()],
+    ...warning
   },
   {
     input: 'dist/components.js',
@@ -86,6 +96,7 @@ export default [
       format: 'esm',
       file: 'dist/only.components.min.js'
     },
-    plugins: [terser()]
+    plugins: [terser()],
+    ...warning
   }
 ]

@@ -76,17 +76,19 @@ const buildFiles = (config, isSilent, options) => {
   }
 
   return new Promise((resolve) => {
-    shell.echo('Cleaning cache...');
-    shell.rm('-rf', 'dist');
-    shell.echo('Building files...');
-    shell.exec(`${rollup} -c ${config} --silent`, (code, stdout, stderr) => {
+    const output = (code, stdout, stderr) => {
       copyFiles();
       if (!isSilent) {
         const message = code === 0 ? '🎉 Files have now been built' : `Something went wrong: ${stderr}`;
-        console.log(message);
+        shell.echo(message);
       }
       return resolve();
-    });
+    };
+
+    shell.echo('Cleaning cache...');
+    shell.rm('-rf', 'dist');
+    shell.echo('Building files...');
+    shell.exec(`${rollup} -c ${config}`, output);
   });
 };
 
@@ -106,7 +108,7 @@ const serveFiles = (config, port, options = {}) => {
   const storybook = `${storybookStart} -p ${port} -c .storybook -s ./dist`;
   const rollupEnv = options.environments ? Object.keys(options.environments).map(env => `${env}:${options.environments[env]}`).join() : '';
 
-  let commands = `${concurrently} -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? `--environment ${rollupEnv}` : ''} -c ${config} -w"`;
+  let commands = `${concurrently} -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? ` --environment ${rollupEnv}` : ''} -c ${config} -w"`;
 
   if (options && options.commands) {
     options.commands.forEach((command) => {
@@ -115,11 +117,18 @@ const serveFiles = (config, port, options = {}) => {
   };
 
   shell.echo('Serving app...');
-  shell.exec(commands, (code, stdout, stderr) => {
-    if (stderr) {
-      console.log('err: ', stderr);
+  const commandExec = shell.exec(`${commands} --color always`, {async:true});
+
+  commandExec.stderr.on('data', (data) => {
+    const regex = /\d+(\%|\s\bpercent\b)/g;
+    const hasPercent = data.match(regex);
+    const message = data.replace(/[^0-9a-zA-Z ]/g, '');
+
+    if (message && message.trim().length > 0 && !hasPercent) {
+      shell.echo(data.trim());
     }
   });
+
   shell.echo(`http://localhost:${port}`);
 };
 

@@ -50,6 +50,13 @@ const plugins = [
   }))
 ];
 
+const warning = {
+  onwarn(warning, warn) {
+    if (warning.code === 'THIS_IS_UNDEFINED') return;
+    warn(warning);
+  }
+};
+
 const es5Module = 'node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
 const webBundleModule = 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js';
 const runtimeModule = 'node_modules/regenerator-runtime/runtime.js';
@@ -72,7 +79,8 @@ export default [
       file: 'dist/polyfill.js',
       format: 'esm'
     },
-    plugins: [multiEntry()]
+    plugins: [multiEntry()],
+    ...warning
   },
   {
     input: [`${runtime}`,'src/**/component.js'],
@@ -81,6 +89,7 @@ export default [
       format: 'esm',
       file: 'dist/components.js'
     },
-    plugins
+    plugins,
+    ...warning
   }
 ]

@@ -129,7 +129,6 @@ const serveFiles = (config, port, options = {}) => {
     }
   });
 
-  shell.echo(`http://localhost:${port}`);
 };
 
 export {

@@ -110,6 +110,25 @@ In your `dist` folder will find the `components.min.js`
    padl serve --port 8080
   ```
 
+### Config file
+
+- type polymer/lit (String, Default: polymer, prefilled on setup)
+- watch (Object)
+  - watchGlob (Array)
+  - commands (Array)
+- static (Array)
+
+```javascript
+{
+  "type": "lit",
+  "watch": {
+    "watchGlob": ["styles/**", "dist/*"],
+    "commands": ["npm run less:watch"]
+  },
+  "static": ["./styles/fonts"]
+}
+```
+
 ### Test your components
 
  Inside your pattern library

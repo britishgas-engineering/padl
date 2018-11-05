@@ -36,10 +36,13 @@ export default (args) => {
     const suiteFiles = glob.sync('test/**/*_test.js').map(file => `'${file.replace('test/', '')}'`);
     const fixtureContent = createTestFixtures(testHTMLFiles, suiteFiles);
 
-    write.sync('dist/text-fixtures.js', fixtureContent);
+    write.sync('dist/test-fixtures.js', fixtureContent);
     shell.echo('Running tests...');
     shell.exec(`${wct} --npm ${isHeadless ? `--config-file wct.headless.config.json` : ''} ${isPersistent ? '-p' : ''}`, (code, stdout, stderr) => {
         console.log(code === 0 ? stdout : stdout + stderr);
+        if (code === 1) {
+          process.exit(1);
+        }
       });
   }).catch((e) => {
     shell.echo(`error: ${e}`);

@@ -98,15 +98,69 @@ test('check `buildFiles`', (t) => {
 	const exec = sinon.stub(shell, 'exec');
 	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
 
-	util.buildFiles(config, true);
+	util.buildFiles(config);
+  exec.args[0][1](0);
 
 	t.truthy(echo.called);
 	t.truthy(exec.called);
 	t.truthy(rm.called);
 	t.deepEqual(echo.args[0], ['Cleaning cache...']);
 	t.deepEqual(echo.args[1], ['Building files...']);
-	t.deepEqual(exec.args[0][0], `${rollup} -c ${config} --silent`);
-	sinon.restore();
+  t.deepEqual(echo.args[2], ['🎉 Files have now been built']);
+
+	t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
+
+  sinon.restore();
+});
+
+test('check `buildFiles fail`', (t) => {
+	const config = 'rollup.config.js';
+	const echo = sinon.stub(shell, 'echo');
+	const rm = sinon.stub(shell, 'rm');
+	const exec = sinon.stub(shell, 'exec');
+	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+
+	util.buildFiles(config);
+  exec.args[0][1](1, '', 'failed');
+
+	t.truthy(echo.called);
+	t.truthy(exec.called);
+	t.truthy(rm.called);
+	t.deepEqual(echo.args[0], ['Cleaning cache...']);
+	t.deepEqual(echo.args[1], ['Building files...']);
+  t.deepEqual(echo.args[2], ['Something went wrong: failed']);
+
+	t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
+
+  sinon.restore();
+});
+
+test('check `buildFiles` with static copy', (t) => {
+	const config = 'rollup.config.js';
+	const echo = sinon.stub(shell, 'echo');
+	const rm = sinon.stub(shell, 'rm');
+	const exec = sinon.stub(shell, 'exec');
+  const cp = sinon.stub(shell, 'cp');
+	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+  const options = {
+    static: ['foo']
+  };
+
+	util.buildFiles(config, false, options);
+  exec.args[0][1](0);
+
+	t.truthy(echo.called);
+	t.truthy(exec.called);
+	t.truthy(rm.called);
+	t.deepEqual(echo.args[0], ['Cleaning cache...']);
+	t.deepEqual(echo.args[1], ['Building files...']);
+  t.deepEqual(echo.args[2], ['Copying files...']);
+  t.deepEqual(echo.args[3], ['🎉 Files have now been built']);
+  t.deepEqual(cp.args[0], ['-R', 'foo', './dist/foo']);
+
+	t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
+
+  sinon.restore();
 });
 
 test('check `buildStorybook`', (t) => {
@@ -116,6 +170,7 @@ test('check `buildStorybook`', (t) => {
 	const storybookBuild = 'node_modules/.bin/build-storybook';
 
 	util.buildStorybook(config);
+  exec.args[0][1](0);
 
 	t.truthy(echo.called);
 	t.truthy(exec.called);
@@ -124,7 +179,7 @@ test('check `buildStorybook`', (t) => {
 	sinon.restore();
 });
 
-test('check `serveFiles`', (t) => {
+test.skip('check `serveFiles`', (t) => {
 	const config = 'rollup.config.js';
 	const echo = sinon.stub(shell, 'echo');
 	const exec = sinon.stub(shell, 'exec');
@@ -136,7 +191,23 @@ test('check `serveFiles`', (t) => {
 	t.truthy(echo.called);
 	t.truthy(exec.called);
 	t.deepEqual(echo.args[0], ['Serving app...']);
-	t.deepEqual(echo.args[1], ['http://localhost:9000']);
-	t.deepEqual(exec.args[0][0], `${concurrently} -p -n -r --kill-others "node_modules/.bin/start-storybook -p 9000 -c .storybook --quiet" "${rollup} -c ${config} -w"`);
+	t.deepEqual(exec.args[0][0], `${concurrently} -p -n -r --kill-others "node_modules/.bin/start-storybook -p 9000 -c .storybook -s ./dist" "${rollup} -c ${config} -w"`);
+	sinon.restore();
+});
+
+test.skip('check `serveFiles` fail', (t) => {
+	const config = 'rollup.config.js';
+	const echo = sinon.stub(shell, 'echo');
+	const exec = sinon.stub(shell, 'exec');
+	const concurrently = path.join(t.context.cliPath, 'node_modules/.bin/concurrently');
+	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+
+	util.serveFiles(config, 9000);
+
+	t.truthy(echo.called);
+	t.truthy(exec.called);
+	t.deepEqual(echo.args[0], ['Serving app...']);
+  t.deepEqual(echo.args[1], ['err: ', 'it failed']);
+	t.deepEqual(exec.args[0][0], `${concurrently} -p -n -r --kill-others "node_modules/.bin/start-storybook -p 9000 -c .storybook -s ./dist" "${rollup} -c ${config} -w"`);
 	sinon.restore();
 });

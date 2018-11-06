@@ -36,11 +36,6 @@ if (process.env.WATCH_DIR) {
 
 const plugins = [
   resolve({jsnext: true}),
-  livereload({
-    watch: dir_watch,
-    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
-    applyCSSLive: true
-  }),
   less(),
   multiEntry(),
   babel(babelrc({
@@ -49,6 +44,15 @@ const plugins = [
     exclude: 'node_modules/**'
   }))
 ];
+
+if (!process.env.NO_LIVERELOAD) {
+  const livereloadPlugin = livereload({
+    watch: dir_watch,
+    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
+    applyCSSLive: true
+  });
+  plugins.push(livereloadPlugin);
+}
 
 const warning = {
   onwarn(warning, warn) {

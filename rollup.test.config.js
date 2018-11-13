@@ -40,11 +40,6 @@ if (process.env.WATCH_DIR) {
 
 const plugins = [
   resolve({jsnext: true}),
-  livereload({
-    watch: dir_watch,
-    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
-    applyCSSLive: true
-  }),
   less({
     plugins: [autoprefixPlugin, cleanCSSPlugin]
   }),

@@ -11,6 +11,7 @@ const {
 const { rollupConfig, rollupServeConfig } = CONSTANTS;
 
 export default (args = {}) => {
+  console.log(process.env.NO_LIVERELOAD);
   const port = args && args.port || 9001;
   let options = {};
   options.environments = {};

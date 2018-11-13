@@ -1,5 +1,7 @@
 import babel from 'rollup-plugin-babel';
 import babelrc from 'babelrc-rollup';
+import Autoprefix from 'less-plugin-autoprefix';
+import CleanCSS from 'less-plugin-clean-css';
 import resolve from 'rollup-plugin-node-resolve';
 import { terser } from "rollup-plugin-terser";
 import multiEntry from 'rollup-plugin-multi-entry';
@@ -9,6 +11,8 @@ import fs from 'fs';
 
 let cliPath = path.join(path.dirname(__filename));
 
+const autoprefixPlugin = new Autoprefix({grid: true, browsers: ['last 2 versions']});
+const cleanCSSPlugin = new CleanCSS({advanced: true, compatibility: 'ie11', level: 2});
 const babelConfig = {
   presets: [
     ['env', {
@@ -28,7 +32,9 @@ const babelConfig = {
 
 const plugins = [
   resolve({jsnext: true}),
-  less(),
+  less({
+    plugins: [autoprefixPlugin, cleanCSSPlugin]
+  }),
   multiEntry(),
   babel(babelrc({
     addExternalHelpersPlugin: true,

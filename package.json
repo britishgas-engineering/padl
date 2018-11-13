@@ -25,6 +25,8 @@
     "babelrc-rollup": "^3.0.0",
     "concurrently": "^3.6.1",
     "glob": "^7.1.2",
+    "less-plugin-autoprefix": "github:jholt1/less-plugin-autoprefix",
+    "less-plugin-clean-css": "github:jholt1/less-plugin-clean-css#master",
     "minimist": "^1.2.0",
     "regenerator-runtime": "^0.12.1",
     "rollup": "^0.64.1",

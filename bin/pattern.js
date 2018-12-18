@@ -26,6 +26,12 @@ shell.config.silent = true;
 
 util.missingArg(command, 'Please tell me what you want me todo!');
 
-addConfigArgs();
+if (command !== 'new') {
+  addConfigArgs();
+}
 
-commands[util.types[command]](args);
+if (commands[util.types[command]]) {
+  commands[util.types[command]](args);
+} else {
+  util.errorMessage(`Can't find find command '${command}'`);
+}

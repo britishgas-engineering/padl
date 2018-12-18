@@ -1,5 +1,7 @@
 import babel from 'rollup-plugin-babel';
 import babelrc from 'babelrc-rollup';
+import Autoprefix from 'less-plugin-autoprefix';
+import CleanCSS from 'less-plugin-clean-css';
 import resolve from 'rollup-plugin-node-resolve';
 import multiEntry from 'rollup-plugin-multi-entry';
 import livereload from 'rollup-plugin-livereload'
@@ -9,6 +11,8 @@ import fs from 'fs';
 
 let cliPath = path.join(path.dirname(__filename));
 
+const autoprefixPlugin = new Autoprefix({grid: true, browsers: ['last 2 versions']});
+const cleanCSSPlugin = new CleanCSS({advanced: true, compatibility: 'ie11', level: 2});
 const babelConfig = {
   presets: [
     ['env', {
@@ -36,12 +40,9 @@ if (process.env.WATCH_DIR) {
 
 const plugins = [
   resolve({jsnext: true}),
-  livereload({
-    watch: dir_watch,
-    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
-    applyCSSLive: true
+  less({
+    plugins: [autoprefixPlugin, cleanCSSPlugin]
   }),
-  less(),
   multiEntry(),
   babel(babelrc({
     addExternalHelpersPlugin: true,
@@ -49,6 +50,15 @@ const plugins = [
     exclude: 'node_modules/**'
   }))
 ];
+
+if (!process.env.NO_LIVERELOAD) {
+  const livereloadPlugin = livereload({
+    watch: dir_watch,
+    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
+    applyCSSLive: true
+  });
+  plugins.push(livereloadPlugin);
+}
 
 const warning = {
   onwarn(warning, warn) {

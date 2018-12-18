@@ -33,5 +33,5 @@ if (command !== 'new') {
 if (commands[util.types[command]]) {
   commands[util.types[command]](args);
 } else {
-  util.errorMessage(`Can't find find command '${command}'`);
+  util.errorMessage(`Can't find command '${command}'`);
 }

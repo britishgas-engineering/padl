@@ -1,5 +1,6 @@
 import shell from 'shelljs';
 import path from 'path';
+import colors from 'colors';
 
 import * as util from '../util';
 
@@ -47,7 +48,7 @@ export default (args) => {
       }
     });
 
-    successMessage(`${name} library has been created. \nRun 'cd ${name} && npm install' to setup ${name}`);
+    successMessage(`${colors.green(name)} library has been created 🎉 \n\n ${colors.green("Next steps:")} \n    $ cd ${name} && npm install\n    $ npm start\n`);
   } else {
     errorMessage(`${name} folder already exists`);
   }

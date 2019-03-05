@@ -16,7 +16,7 @@ class COMPONENT_NAME extends LitElement {
   }
 
   // Render method should return a `TemplateResult` using the provided lit-html `html` tag function
-  _render() {
+  render() {
     return html([`
       <style>${styles}</style>
       <h2>Hello ${this.prop1}!</h2>

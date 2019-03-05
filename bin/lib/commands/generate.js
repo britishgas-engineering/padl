@@ -14,8 +14,8 @@ const {
 const { cliPath } = CONSTANTS;
 
 export default (args) => {
-  let type;
   let config;
+  const type = 'lit';
   const command = args._[0];
 
   try {
@@ -23,16 +23,6 @@ export default (args) => {
   }
   catch (e) {
     errorMessage('Missing config, is this the right folder?');
-  }
-
-  if (!config || !config.type) {
-    errorMessage('Missing config settings, please add `type` of polymer you are using `polymer` or `lit`.');
-  }
-
-  if (config.type === 'polymer' || config.type === 'lit') {
-    type = config.type;
-  } else {
-    errorMessage('.padl type is not right, please use `polymer` or `lit`.');
   }
 
   missingArg(args._[1], `Please state the component name after '${command}'.`);

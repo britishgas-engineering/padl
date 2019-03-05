@@ -14,9 +14,9 @@ const {
 const { cliPath } = CONSTANTS;
 
 export default (args) => {
-  const command = args._[0];
-
   missingArg(args._[1], `Please state the library name after '${command}'.`);
+
+  const command = args._[0];
   const type = 'lit';
   const name = args._[1].replace(/[^\w\-]/gi, '');
   const templatePath = path.join(cliPath, 'templates', 'repo');

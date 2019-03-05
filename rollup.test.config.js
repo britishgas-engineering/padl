@@ -3,7 +3,6 @@ import {
   warning,
   plugins,
   runtime,
-  module,
   livereload
 } from './rollup.default.config';
 

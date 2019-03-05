@@ -44,7 +44,7 @@ export default (args) => {
       shell.sed('-i', /REPO_TYPE/g, type, file);
 
       if (type === 'lit') {
-        shell.sed('-i', /@polymer\/polymer.+/, `@polymer/lit-element": "^0.5.2",`, file);
+        shell.sed('-i', /@polymer\/polymer.+/, `lit-element": "^2.0.1",`, file);
       }
     });
 

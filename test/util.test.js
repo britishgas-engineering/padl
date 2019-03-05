@@ -2,6 +2,7 @@ import test from 'ava';
 import path from 'path';
 import sinon from 'sinon';
 import shell from 'shelljs';
+import fs from 'fs';
 
 import * as util from '../bin/lib/util';
 
@@ -96,14 +97,30 @@ test('check `buildFiles`', (t) => {
 	const echo = sinon.stub(shell, 'echo');
 	const rm = sinon.stub(shell, 'rm');
 	const exec = sinon.stub(shell, 'exec');
+  const sed = sinon.stub(shell, 'sed');
+  const cp = sinon.stub(shell, 'cp');
+  const ls = sinon.stub(shell, 'ls').callsFake(() => 'module.js');
+  const readFileSync = sinon.stub(fs, 'readFileSync');
 	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+
+  readFileSync.callsFake(() => {
+    return `{"name": "hi"}`;
+  });
 
 	util.buildFiles(config);
   exec.args[0][1](0);
-
+  t.truthy(ls.called);
+  t.truthy(sed.called);
+  t.truthy(cp.called);
+  t.truthy(readFileSync.called);
 	t.truthy(echo.called);
 	t.truthy(exec.called);
 	t.truthy(rm.called);
+
+  t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
+
 	t.deepEqual(echo.args[0], ['Cleaning cache...']);
 	t.deepEqual(echo.args[1], ['Building files...']);
   t.deepEqual(echo.args[2], ['🎉 Files have now been built']);
@@ -118,14 +135,30 @@ test('check `buildFiles fail`', (t) => {
 	const echo = sinon.stub(shell, 'echo');
 	const rm = sinon.stub(shell, 'rm');
 	const exec = sinon.stub(shell, 'exec');
+  const sed = sinon.stub(shell, 'sed');
+  const cp = sinon.stub(shell, 'cp');
+  const ls = sinon.stub(shell, 'ls').callsFake(() => 'module.js');
+  const readFileSync = sinon.stub(fs, 'readFileSync');
 	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+
+  readFileSync.callsFake(() => {
+    return `{"name": "hi"}`;
+  });
 
 	util.buildFiles(config);
   exec.args[0][1](1, '', 'failed');
-
+  t.truthy(ls.called);
+  t.truthy(sed.called);
+  t.truthy(cp.called);
+  t.truthy(readFileSync.called);
 	t.truthy(echo.called);
 	t.truthy(exec.called);
 	t.truthy(rm.called);
+
+  t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
+
 	t.deepEqual(echo.args[0], ['Cleaning cache...']);
 	t.deepEqual(echo.args[1], ['Building files...']);
   t.deepEqual(echo.args[2], ['Something went wrong: failed']);
@@ -136,22 +169,37 @@ test('check `buildFiles fail`', (t) => {
 });
 
 test('check `buildFiles` with static copy', (t) => {
-	const config = 'rollup.config.js';
+  const config = 'rollup.config.js';
 	const echo = sinon.stub(shell, 'echo');
 	const rm = sinon.stub(shell, 'rm');
 	const exec = sinon.stub(shell, 'exec');
+  const sed = sinon.stub(shell, 'sed');
   const cp = sinon.stub(shell, 'cp');
+  const ls = sinon.stub(shell, 'ls').callsFake(() => 'module.js');
+  const readFileSync = sinon.stub(fs, 'readFileSync');
 	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
   const options = {
     static: ['foo']
   };
 
+  readFileSync.callsFake(() => {
+    return `{"name": "hi"}`;
+  });
+
 	util.buildFiles(config, false, options);
   exec.args[0][1](0);
-
+  t.truthy(ls.called);
+  t.truthy(sed.called);
+  t.truthy(cp.called);
+  t.truthy(readFileSync.called);
 	t.truthy(echo.called);
 	t.truthy(exec.called);
 	t.truthy(rm.called);
+
+  t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
+
 	t.deepEqual(echo.args[0], ['Cleaning cache...']);
 	t.deepEqual(echo.args[1], ['Building files...']);
   t.deepEqual(echo.args[2], ['Copying files...']);

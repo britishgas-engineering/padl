@@ -77,7 +77,7 @@ const createModule = (options) => {
     options.environments.BUILD &&
     options.environments.BUILD === 'serve')
   ) {
-    const webcomponent = path.join(cliPath, 'node_modules', '@webcomponents', 'webcomponentsjs');
+    const webcomponent = path.join('node_modules', '@webcomponents', 'webcomponentsjs');
     const runtime = path.join(cliPath, 'node_modules', 'regenerator-runtime');
     const templatePath = path.join(cliPath, 'templates', 'module');
     const name = JSON.parse(fs.readFileSync(`package.json`, 'utf8')).name.replace(/ /g, '-');

@@ -45,7 +45,17 @@ export default (args) => {
     headlessCheck();
   }
 
-  buildFiles(rollupConfig).then(() => {
+  let options = {};
+
+  if (args.config && args.config.static) {
+    options.static = args.config.static;
+  };
+
+  if (args.config && args.config.globalStyle) {
+    options.globalStyle = args.config.globalStyle;
+  };
+
+  buildFiles(rollupConfig, false, options).then(() => {
     const testHTMLFiles = glob.sync('test/**/*_test.html');
     const suiteFiles = glob.sync('test/**/*_test.js').map(file => `'${file.replace('test/', '')}'`);
     const fixtureContent = createTestFixtures(testHTMLFiles, suiteFiles);

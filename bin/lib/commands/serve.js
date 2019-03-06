@@ -32,6 +32,10 @@ export default (args = {}) => {
     options.static = args.config.static;
   };
 
+  if (args.config && args.config.globalStyle) {
+    options.globalStyle = args.config.globalStyle;
+  };
+
   buildFiles(rollupConfig, true, options).then(() => {
     serveFiles(rollupServeConfig, port, options);
   }).catch((e) => {

@@ -9,7 +9,15 @@ npm i -g padl
 ## About
 
  This is a project that allows you to easily create pattern libraries, with pure webcomponents using polymer (or lit). It bundles
- all of your components together with the needed polyfills so that you only require one js file (`dist/components.min.js`).
+ all of your components together with the needed polyfills so that you only require one js file.
+
+## Why use?
+
+Padl does a few things that makes developing webcomponents easier:
+
+  1. 🎉 Generates all the files that you need, when creating a pattern library and when creating a new component.
+  2. 👩‍💻 Creates a kickass development environment, using storybook.
+  3. 🚀 Bundles and tree shakes all the needed files together.
 
 ### Example structure
 
@@ -28,7 +36,9 @@ If we create a `hello-world` pattern library with a `primary-button` web compone
   | | └── primary-button_test.html
   | └── index.html
   └─┬ dist
-    └─ components.min.js
+    ├── hello-world.min.js
+    └── components.min.js
+
 ```
 
 To create this example:
@@ -40,6 +50,19 @@ To create this example:
  padl g primary-button
  padl build
 ```
+
+## Integration
+
+  As seen in the example, `hello-world.min.js` file is created.
+
+  This will add all the polyfills, components, lit-element and can inline your global styles. This is in an effort to reduce the amount of blocking, while keeping the file as small as possible.
+
+  > Note:
+
+  Our browser coverage is `last 2 browsers` + IE11. For this reason we aren't moving forward with ES modules,
+  however with this setup it will allow us to start to look into how to implement.
+
+
 
 ## How to
 
@@ -117,6 +140,10 @@ In your `dist` folder will find the `components.min.js`
   - watchGlob (Array)
   - commands (Array)
 - static (Array)
+- globalStyle
+  - input (String)
+  - output (String)
+  - watch (String|Array|Glob)
 
 ```javascript
 {
@@ -125,7 +152,13 @@ In your `dist` folder will find the `components.min.js`
     "watchGlob": ["styles/**", "dist/*"],
     "commands": ["npm run less:watch"]
   },
-  "static": ["./styles/fonts"]
+  "static": ["./styles/fonts"],
+  "globalStyle": {
+    "inline": true,
+    "input": "./styles/base/all.less",
+    "output": "./dist/styles.min.css",
+    "watch": "./styles/**"
+  }
 }
 ```
 
@@ -178,7 +211,7 @@ In your `dist` folder will find the `components.min.js`
    padl test -h
   ```
 
-### Create sketch files of components
+### Create sketch files of components (ALPHA - WIP)
 
 Inside your pattern library
 

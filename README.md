@@ -11,6 +11,14 @@ npm i -g padl
  This is a project that allows you to easily create pattern libraries, with pure webcomponents using polymer (or lit). It bundles
  all of your components together with the needed polyfills so that you only require one js file.
 
+## Why use?
+
+Padl does a few things that makes developing webcomponents easier:
+
+  1. 🎉 Generates all the files that you need, when creating a pattern library and when creating a new component.
+  2. 👩‍💻 Creates a kickass development environment, using storybook.
+  3. 🚀 Bundles and tree shakes all the needed files together.
+
 ### Example structure
 
 If we create a `hello-world` pattern library with a `primary-button` web component:

@@ -93,15 +93,15 @@ test('check `missingArg` has type', (t) => {
 });
 
 test('check `buildFiles`', (t) => {
-	const config = 'rollup.config.js';
-	const echo = sinon.stub(shell, 'echo');
-	const rm = sinon.stub(shell, 'rm');
-	const exec = sinon.stub(shell, 'exec');
+  const config = 'rollup.config.js';
+  const echo = sinon.stub(shell, 'echo');
+  const rm = sinon.stub(shell, 'rm');
+  const exec = sinon.stub(shell, 'exec');
   const sed = sinon.stub(shell, 'sed');
   const cp = sinon.stub(shell, 'cp');
   const ls = sinon.stub(shell, 'ls').callsFake(() => 'module.js');
   const readFileSync = sinon.stub(fs, 'readFileSync');
-	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+  const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
 
   readFileSync.callsFake(() => {
     return `{"name": "hi"}`;
@@ -131,15 +131,15 @@ test('check `buildFiles`', (t) => {
 });
 
 test('check `buildFiles fail`', (t) => {
-	const config = 'rollup.config.js';
-	const echo = sinon.stub(shell, 'echo');
-	const rm = sinon.stub(shell, 'rm');
-	const exec = sinon.stub(shell, 'exec');
+  const config = 'rollup.config.js';
+  const echo = sinon.stub(shell, 'echo');
+  const rm = sinon.stub(shell, 'rm');
+  const exec = sinon.stub(shell, 'exec');
   const sed = sinon.stub(shell, 'sed');
   const cp = sinon.stub(shell, 'cp');
   const ls = sinon.stub(shell, 'ls').callsFake(() => 'module.js');
   const readFileSync = sinon.stub(fs, 'readFileSync');
-	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+  const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
 
   readFileSync.callsFake(() => {
     return `{"name": "hi"}`;
@@ -170,14 +170,14 @@ test('check `buildFiles fail`', (t) => {
 
 test('check `buildFiles` with static copy', (t) => {
   const config = 'rollup.config.js';
-	const echo = sinon.stub(shell, 'echo');
-	const rm = sinon.stub(shell, 'rm');
-	const exec = sinon.stub(shell, 'exec');
+  const echo = sinon.stub(shell, 'echo');
+  const rm = sinon.stub(shell, 'rm');
+  const exec = sinon.stub(shell, 'exec');
   const sed = sinon.stub(shell, 'sed');
   const cp = sinon.stub(shell, 'cp');
   const ls = sinon.stub(shell, 'ls').callsFake(() => 'module.js');
   const readFileSync = sinon.stub(fs, 'readFileSync');
-	const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
+  const rollup = path.join(t.context.cliPath, 'node_modules/.bin/rollup');
   const options = {
     static: ['foo']
   };

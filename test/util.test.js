@@ -113,19 +113,19 @@ test('check `buildFiles`', (t) => {
   t.truthy(sed.called);
   t.truthy(cp.called);
   t.truthy(readFileSync.called);
-	t.truthy(echo.called);
-	t.truthy(exec.called);
-	t.truthy(rm.called);
+  t.truthy(echo.called);
+  t.truthy(exec.called);
+  t.truthy(rm.called);
 
   t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
 
-	t.deepEqual(echo.args[0], ['Cleaning cache...']);
-	t.deepEqual(echo.args[1], ['Building files...']);
+  t.deepEqual(echo.args[0], ['Cleaning cache...']);
+  t.deepEqual(echo.args[1], ['Building files...']);
   t.deepEqual(echo.args[2], ['🎉 Files have now been built']);
 
-	t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
+  t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
 
   sinon.restore();
 });
@@ -151,19 +151,19 @@ test('check `buildFiles fail`', (t) => {
   t.truthy(sed.called);
   t.truthy(cp.called);
   t.truthy(readFileSync.called);
-	t.truthy(echo.called);
-	t.truthy(exec.called);
-	t.truthy(rm.called);
+  t.truthy(echo.called);
+  t.truthy(exec.called);
+  t.truthy(rm.called);
 
   t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
 
-	t.deepEqual(echo.args[0], ['Cleaning cache...']);
-	t.deepEqual(echo.args[1], ['Building files...']);
+  t.deepEqual(echo.args[0], ['Cleaning cache...']);
+  t.deepEqual(echo.args[1], ['Building files...']);
   t.deepEqual(echo.args[2], ['Something went wrong: failed']);
 
-	t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
+  t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
 
   sinon.restore();
 });
@@ -192,21 +192,21 @@ test('check `buildFiles` with static copy', (t) => {
   t.truthy(sed.called);
   t.truthy(cp.called);
   t.truthy(readFileSync.called);
-	t.truthy(echo.called);
-	t.truthy(exec.called);
-	t.truthy(rm.called);
+  t.truthy(echo.called);
+  t.truthy(exec.called);
+  t.truthy(rm.called);
 
   t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
 
-	t.deepEqual(echo.args[0], ['Cleaning cache...']);
-	t.deepEqual(echo.args[1], ['Building files...']);
+  t.deepEqual(echo.args[0], ['Cleaning cache...']);
+  t.deepEqual(echo.args[1], ['Building files...']);
   t.deepEqual(echo.args[2], ['Copying files...']);
   t.deepEqual(echo.args[3], ['🎉 Files have now been built']);
   t.deepEqual(cp.args[0], ['-R', 'foo', './dist/foo']);
 
-	t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
+  t.deepEqual(exec.args[0][0], `${rollup} -c ${config}`);
 
   sinon.restore();
 });

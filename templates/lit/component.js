@@ -1,4 +1,4 @@
-import {html, LitElement} from '@polymer/lit-element';
+import {html, LitElement} from 'lit-element';
 import styles from './styles.less';
 
 class COMPONENT_NAME extends LitElement {

@@ -1,7 +1,7 @@
 suite('DASH_NAME', function() {
 
-  test('instantiating the element with default properties works', () => {
-    const element = fixture('COMPONENT_NAMEBasicTestFixture');
+  test('instantiating the element with default properties works', async () => {
+    const element = await fixture('COMPONENT_NAMEBasicTestFixture');
     const elementShadowRoot = element.shadowRoot;
     const elementHeader = elementShadowRoot.querySelector('h2');
 
@@ -10,8 +10,8 @@ suite('DASH_NAME', function() {
     a11ySuite('COMPONENT_NAMEBasicTestFixture');
   });
 
-  test('setting a property on the element works', () => {
-    const element = fixture('COMPONENT_NAMEChangedPropertyTestFixture');
+  test('setting a property on the element works', async () => {
+    const element = await fixture('COMPONENT_NAMEChangedPropertyTestFixture');
     const elementShadowRoot = element.shadowRoot;
     const elementHeader = elementShadowRoot.querySelector('h2');
 

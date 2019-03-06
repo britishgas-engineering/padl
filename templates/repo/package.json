@@ -20,7 +20,7 @@
     "babel-preset-env": "1.7.0",
     "lit-element": "^2.0.1",
     "moment": "2.22.2",
-    "padl": "0.2.1",
+    "padl": "latest",
     "wct-browser-legacy": "1.0.2",
     "web-component-tester": "6.9.2"
   }

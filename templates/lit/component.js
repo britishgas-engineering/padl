@@ -1,4 +1,4 @@
-import {html, LitElement} from 'lit-element';
+import {html, css, LitElement} from 'lit-element';
 import styles from './styles.less';
 
 class COMPONENT_NAME extends LitElement {
@@ -10,6 +10,10 @@ class COMPONENT_NAME extends LitElement {
     };
   }
 
+  static get styles() {
+    return css([`${styles}`]);
+  }
+
   constructor() {
     super();
     this.prop1 = 'DASH_NAME';
@@ -18,7 +22,6 @@ class COMPONENT_NAME extends LitElement {
   // Render method should return a `TemplateResult` using the provided lit-html `html` tag function
   render() {
     return html([`
-      <style>${styles}</style>
       <h2>Hello ${this.prop1}!</h2>
       <p><slot></slot></p>
     `]);

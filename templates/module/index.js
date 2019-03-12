@@ -2,7 +2,7 @@
 
   _INSERT_ES5_ADAPTER_
 
-  const getRoot = () => {
+  function getRoot() {
     const scripts = document.getElementsByTagName('script');
     const lastScript = scripts[scripts.length - 1].src;
     const list = lastScript.match(new RegExp('https?://[^/]*'))
@@ -10,7 +10,7 @@
     return list && list[0] || '';
   };
 
-  const root = `${getRoot()}/`;
+  const root = getRoot() + "/";
 
   window.WebComponents = window.WebComponents || {};
   window.WebComponents.root = root;

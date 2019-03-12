@@ -3,14 +3,21 @@
   _INSERT_ES5_ADAPTER_
 
   function getRoot() {
-    const scripts = document.getElementsByTagName('script');
-    const lastScript = scripts[scripts.length - 1].src;
-    const list = lastScript.match(new RegExp('https?://[^/]*'))
+    var scripts = document.getElementsByTagName('script');
+    var list = Array.from(scripts).reduce(function (acc, script) {
+      var src = script.src;
 
-    return list && list[0] || '';
+      if (src && src.match(new RegExp('_INSERT_NAME_'))) {
+        var host = src.replace(new RegExp('_INSERT_NAME_'), '');
+        acc.push(host);
+      }
+
+      return acc;
+    }, []);
+    return list && list[0] || '/';
   };
 
-  const root = getRoot() + "/";
+  var root = getRoot();
 
   window.WebComponents = window.WebComponents || {};
   window.WebComponents.root = root;

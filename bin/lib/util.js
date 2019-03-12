@@ -94,6 +94,7 @@ const createModule = (options) => {
     shell.sed('-i', /_INSERT_ES5_ADAPTER_/g, es5, file);
     shell.sed('-i', /_INSERT_WEBCOMPONENT_LOADER_/g, loader, file);
     shell.sed('-i', /_INSERT_COMPONENT_JS_/g, component, file);
+    shell.sed('-i', /_INSERT_NAME_/g, `${name}.?m?i?n?.js`, file);
 
     if (options && options.globalStyle  && options.globalStyle.inline) {
       let inlineContent = '';

@@ -120,6 +120,7 @@ test('check `buildFiles`', (t) => {
   t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[3], ['-i', /_INSERT_NAME_/g, `hi.js`, 'module.js']);
 
   t.deepEqual(echo.args[0], ['Cleaning cache...']);
   t.deepEqual(echo.args[1], ['Building files...']);
@@ -158,6 +159,7 @@ test('check `buildFiles fail`', (t) => {
   t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[3], ['-i', /_INSERT_NAME_/g, `hi.js`, 'module.js']);
 
   t.deepEqual(echo.args[0], ['Cleaning cache...']);
   t.deepEqual(echo.args[1], ['Building files...']);
@@ -199,6 +201,7 @@ test('check `buildFiles` with static copy', (t) => {
   t.deepEqual(sed.args[0], ['-i', /_INSERT_ES5_ADAPTER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[1], ['-i', /_INSERT_WEBCOMPONENT_LOADER_/g, `{"name": "hi"}`, 'module.js']);
   t.deepEqual(sed.args[2], ['-i', /_INSERT_COMPONENT_JS_/g, `{"name": "hi"}`, 'module.js']);
+  t.deepEqual(sed.args[3], ['-i', /_INSERT_NAME_/g, `hi.js`, 'module.js']);
 
   t.deepEqual(echo.args[0], ['Cleaning cache...']);
   t.deepEqual(echo.args[1], ['Building files...']);

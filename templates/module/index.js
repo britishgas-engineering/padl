@@ -7,8 +7,8 @@
     var list = Array.from(scripts).reduce(function (acc, script) {
       var src = script.src;
 
-      if (src && src.match('_INSERT_NAME_')) {
-        var host = src.replace('_INSERT_NAME_', '');
+      if (src && src.match(new RegExp('_INSERT_NAME_'))) {
+        var host = src.replace(new RegExp('_INSERT_NAME_'), '');
         acc.push(host);
       }
 

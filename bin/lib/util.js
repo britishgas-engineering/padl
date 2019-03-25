@@ -115,6 +115,8 @@ const createModule = (options) => {
       shell.sed('-i', /_INLINE_STYLES_/g, content, file);
     }
 
+    console.log(`${rollup} -c ${rollupModuleConfig} --no-strict`);
+
     shell.exec(`${rollup} -c ${rollupModuleConfig} --no-strict`);
 
   }

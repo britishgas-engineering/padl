@@ -16,18 +16,18 @@ const autoprefixPlugin = new Autoprefix({grid: true, browsers: ['last 2 versions
 const cleanCSSPlugin = new CleanCSS({advanced: true, compatibility: 'ie11', level: 2});
 const babelConfig = {
   presets: [
-    ['env', {
+    ['@babel/env', {
       targets: {
         browsers: ['last 2 versions'],
         ie: 11
       },
       loose: true,
-      useBuiltIns: true
+      useBuiltIns: "entry"
     }]
   ],
   plugins: [
-    'external-helpers',
-    'transform-object-rest-spread'
+    '@babel/plugin-external-helpers',
+    '@babel/plugin-proposal-object-rest-spread'
   ]
 };
 

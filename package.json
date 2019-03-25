@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Develop pattern libraries with lit-element",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {
@@ -16,12 +16,13 @@
   "author": "Jonathan Holt",
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
     "@webcomponents/webcomponentsjs": "^2.2.7",
-    "babel-cli": "^6.26.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
+    "@babel/cli": "^7.0.0",
+    "@babel/plugin-external-helpers": "7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.0",
+    "@babel/register": "7.4.0",
     "babelrc-rollup": "^3.0.0",
     "chokidar": "^2.1.2",
     "colors": "^1.3.3",
@@ -33,8 +34,8 @@
     "minimist": "^1.2.0",
     "regenerator-runtime": "^0.12.1",
     "rollup": "^1.1.2",
-    "rollup-plugin-babel": "^3.0.7",
-    "rollup-plugin-less": "github:jholt1/rollup-plugin-less#compile",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-less": "^1.1.2",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-node-resolve": "^4.0.0",
@@ -74,7 +75,7 @@
   },
   "babel": {
     "presets": [
-      "env"
+      "@babel/preset-env"
     ]
   }
 }

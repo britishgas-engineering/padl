@@ -54,7 +54,7 @@ export default (args) => {
   if (args.config && args.config.globalStyle) {
     options.globalStyle = args.config.globalStyle;
   };
-
+  console.log('heeeyyy...');
   buildFiles(rollupConfig, false, options).then(() => {
     const testHTMLFiles = glob.sync('test/**/*_test.html');
     const suiteFiles = glob.sync('test/**/*_test.js').map(file => `'${file.replace('test/', '')}'`);

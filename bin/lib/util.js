@@ -163,8 +163,9 @@ const buildFiles = (config, isSilent, options) => {
 
   return new Promise((resolve) => {
     const output = (code, stdout, stderr) => {
-      copyFiles(isSilent);
-      createModule(options);
+      console.log('done');
+      // copyFiles(isSilent);
+      // createModule(options);
       if (!isSilent) {
         const message = code === 0 ? '🎉 Files have now been built' : `Something went wrong: ${stderr}`;
         shell.echo(message);

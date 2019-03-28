@@ -70,6 +70,33 @@ const missingArg = (type, message) => {
   }
 };
 
+const checkExistsWithTimeout = (filePath, timeout = 10000) => {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            watcher.close();
+            console.log('Cannot find component files');
+        }, timeout);
+
+        fs.access(filePath, fs.constants.R_OK, (err) => {
+            if (!err) {
+                clearTimeout(timer);
+                watcher.close();
+                resolve();
+            }
+        });
+
+        const dir = path.dirname(filePath);
+        const basename = path.basename(filePath);
+        const watcher = fs.watch(dir, (eventType, filename) => {
+            if (eventType === 'rename' && filename === basename) {
+                clearTimeout(timer);
+                watcher.close();
+                resolve();
+            }
+        });
+    });
+}
+
 const createModule = (options) => {
   if (
     !(options &&
@@ -77,46 +104,48 @@ const createModule = (options) => {
     options.environments.BUILD &&
     options.environments.BUILD === 'serve')
   ) {
+    const libraryPath = process.cwd();
     const webcomponent = path.join('node_modules', '@webcomponents', 'webcomponentsjs');
     const runtime = path.join(cliPath, 'node_modules', 'regenerator-runtime');
     const templatePath = path.join(cliPath, 'templates', 'module');
-    const name = JSON.parse(fs.readFileSync(`package.json`, 'utf8')).name.replace(/ /g, '-');
-    const location = `dist/${name}.js`;
+    const name = JSON.parse(fs.readFileSync(`${libraryPath}/package.json`, 'utf8')).name.replace(/ /g, '-');
+    const location = `${libraryPath}/dist/${name}.js`;
 
     shell.cp(path.join(templatePath, 'index.js'), location);
-    shell.cp('-R', path.join(webcomponent, 'bundles'), `./dist/bundles`);
+    shell.cp('-R', path.join(webcomponent, 'bundles'), `${libraryPath}/dist/bundles`);
 
-    const file = shell.ls(location);
-    const component = fs.readFileSync(`dist/only.components.min.js`, 'utf8');
-    const es5 = fs.readFileSync(`${webcomponent}/custom-elements-es5-adapter.js`, 'utf8');
-    const loader = fs.readFileSync(`${webcomponent}/webcomponents-loader.js`, 'utf8');
+    checkExistsWithTimeout(`${libraryPath}/dist/only.components.min.js`).then(() => {
+      const file = shell.ls(location);
+      const component = fs.readFileSync(`${libraryPath}/dist/only.components.min.js`, 'utf8');
+      const es5 = fs.readFileSync(`${webcomponent}/custom-elements-es5-adapter.js`, 'utf8');
+      const loader = fs.readFileSync(`${webcomponent}/webcomponents-loader.js`, 'utf8');
 
-    shell.sed('-i', /_INSERT_ES5_ADAPTER_/g, es5, file);
-    shell.sed('-i', /_INSERT_WEBCOMPONENT_LOADER_/g, loader, file);
-    shell.sed('-i', /_INSERT_COMPONENT_JS_/g, component, file);
-    shell.sed('-i', /_INSERT_NAME_/g, `${name}.?m?i?n?.js`, file);
+      shell.sed('-i', /_INSERT_ES5_ADAPTER_/g, es5, file);
+      shell.sed('-i', /_INSERT_WEBCOMPONENT_LOADER_/g, loader, file);
+      shell.sed('-i', /_INSERT_COMPONENT_JS_/g, component, file);
+      shell.sed('-i', /_INSERT_NAME_/g, `${name}.?m?i?n?.js`, file);
 
-    if (options && options.globalStyle  && options.globalStyle.inline) {
-      let inlineContent = '';
-      try {
-        inlineContent = fs.readFileSync(options.globalStyle.output).toString().replace(/"/g, "'").replace(/\\/g, '\\\\');
+      if (options && options.globalStyle  && options.globalStyle.inline) {
+        let inlineContent = '';
+        try {
+          inlineContent = fs.readFileSync(options.globalStyle.output).toString().replace(/"/g, "'").replace(/\\/g, '\\\\');
+        }
+        catch (e) {
+          console.log(`${e}`);
+        }
+
+        const content = `
+        const style = document.createElement('style');
+        const ref = document.querySelector('script');
+        style.innerHTML = "${inlineContent}";
+        ref.parentNode.insertBefore(style, ref);
+        `;
+
+        shell.sed('-i', /_INLINE_STYLES_/g, content, file);
       }
-      catch (e) {
-        console.log(`${e}`);
-      }
 
-      const content = `
-      const style = document.createElement('style');
-      const ref = document.querySelector('script');
-      style.innerHTML = "${inlineContent}";
-      ref.parentNode.insertBefore(style, ref);
-      `;
-
-      shell.sed('-i', /_INLINE_STYLES_/g, content, file);
-    }
-
-    shell.exec(`${rollup} -c ${rollupModuleConfig} --no-strict`);
-
+      shell.exec(`${rollup} -c ${rollupModuleConfig} --no-strict`);
+    });
   }
 };
 

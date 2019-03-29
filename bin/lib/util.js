@@ -5,9 +5,9 @@ import fs from 'fs';
 
 shell.config.silent = true;
 
-const rollupBin = 'node_modules/.bin/rollup';
-const concurrentlyBin = 'node_modules/.bin/concurrently';
-const lessBin = 'node_modules/.bin/lessc';
+const rollupBin = '/node_modules/.bin/rollup';
+const concurrentlyBin = '/node_modules/.bin/concurrently';
+const lessBin = '/node_modules/.bin/lessc';
 
 const cliPath = path.join(path.dirname(__filename), '../..');
 const rollupPath = path.join(cliPath, rollupBin);

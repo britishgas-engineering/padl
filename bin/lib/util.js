@@ -5,18 +5,19 @@ import fs from 'fs';
 
 shell.config.silent = true;
 
-const rollupBin = '/node_modules/.bin/rollup';
-const concurrentlyBin = '/node_modules/.bin/concurrently';
-const lessBin = '/node_modules/.bin/lessc';
+const libraryPath = process.cwd();
+const rollupBin = 'node_modules/.bin/rollup';
+const concurrentlyBin = 'node_modules/.bin/concurrently';
+const lessBin = 'node_modules/.bin/lessc';
 
 const cliPath = path.join(path.dirname(__filename), '../..');
 const rollupPath = path.join(cliPath, rollupBin);
 const concurrentlyPath = path.join(cliPath, concurrentlyBin);
 const lessPath = path.join(cliPath, lessBin);
 
-const concurrently = fs.existsSync(concurrentlyPath) ? concurrentlyPath : concurrentlyBin;
-const rollup = fs.existsSync(rollupPath) ? rollupPath : rollupBin;
-const less = fs.existsSync(lessPath) ? lessPath : lessBin;
+const concurrently = fs.existsSync(concurrentlyPath) ? concurrentlyPath : `${libraryPath}/${concurrentlyBin}`;
+const rollup = fs.existsSync(rollupPath) ? rollupPath : `${libraryPath}/${rollupBin}`;
+const less = fs.existsSync(lessPath) ? lessPath : `${libraryPath}/${lessBin}`;
 
 const story2sketch = path.join(cliPath, 'node_modules/.bin/story2sketch');
 const rollupConfig = path.join(cliPath, 'rollup.config.js');
@@ -104,7 +105,6 @@ const createModule = (options) => {
     options.environments.BUILD &&
     options.environments.BUILD === 'serve')
   ) {
-    const libraryPath = process.cwd();
     const webcomponent = path.join('node_modules', '@webcomponents', 'webcomponentsjs');
     const runtime = path.join(cliPath, 'node_modules', 'regenerator-runtime');
     const templatePath = path.join(cliPath, 'templates', 'module');

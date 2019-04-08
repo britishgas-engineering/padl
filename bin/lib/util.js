@@ -2,30 +2,38 @@ import shell from 'shelljs';
 import path from 'path';
 import chokidar from 'chokidar';
 import fs from 'fs';
+import findModules from 'find-node-modules';
 
 shell.config.silent = true;
 
+const getRightPathLocation = (path) => {
+  return findModules().map((nodePath) => {
+    const totalPath = `${nodePath}/${path}`;
+
+    if(fs.existsSync(totalPath)) {
+      return totalPath;
+    }
+  }).filter(nodePath => nodePath)[0];
+};
+
 const libraryPath = process.cwd();
-const rollupBin = 'node_modules/.bin/rollup';
-const concurrentlyBin = 'node_modules/.bin/concurrently';
-const lessBin = 'node_modules/.bin/lessc';
+const rollupPath = getRightPathLocation('.bin/rollup');
+const concurrentlyPath = getRightPathLocation('.bin/concurrently');
+const lessPath = getRightPathLocation('.bin/lessc');
 
 const cliPath = path.join(path.dirname(__filename), '../..');
-const rollupPath = path.join(cliPath, rollupBin);
-const concurrentlyPath = path.join(cliPath, concurrentlyBin);
-const lessPath = path.join(cliPath, lessBin);
 
-const concurrently = fs.existsSync(concurrentlyPath) ? concurrentlyPath : `${libraryPath}/${concurrentlyBin}`;
-const rollup = fs.existsSync(rollupPath) ? rollupPath : `${libraryPath}/${rollupBin}`;
-const less = fs.existsSync(lessPath) ? lessPath : `${libraryPath}/${lessBin}`;
+const concurrently = concurrentlyPath ? concurrentlyPath : `concurrently` ;
+const rollup = rollupPath ? rollupPath : `rollup`;
+const less = lessPath ? lessPath : `lessc`;
 
-const story2sketch = path.join(cliPath, 'node_modules/.bin/story2sketch');
-const rollupConfig = path.join(cliPath, 'rollup.config.js');
-const rollupServeConfig = path.join(cliPath, 'rollup.test.config.js');
-const rollupModuleConfig = path.join(cliPath, 'rollup.module.config.js');
-const storybookStart = 'node_modules/.bin/start-storybook';
-const storybookBuild = 'node_modules/.bin/build-storybook';
-const wct = 'node_modules/.bin/wct';
+const story2sketch = getRightPathLocation('.bin/story2sketch');
+const rollupConfig = path.join(cliPath, 'build', 'rollup', 'rollup.config.js');
+const rollupServeConfig = path.join(cliPath, 'build', 'rollup', 'rollup.test.config.js');
+const rollupModuleConfig = path.join(cliPath, 'build', 'rollup', 'rollup.module.config.js');
+const storybookStart = getRightPathLocation('.bin/start-storybook');
+const storybookBuild = getRightPathLocation('.bin/build-storybook');
+const wct = getRightPathLocation('.bin/wct');
 
 const CONSTANTS = {
   cliPath,
@@ -105,20 +113,21 @@ const createModule = (options) => {
     options.environments.BUILD &&
     options.environments.BUILD === 'serve')
   ) {
-    const webcomponent = path.join('node_modules', '@webcomponents', 'webcomponentsjs');
-    const runtime = path.join(cliPath, 'node_modules', 'regenerator-runtime');
+    const webcomponent = path.join('@webcomponents', 'webcomponentsjs');
     const templatePath = path.join(cliPath, 'templates', 'module');
     const name = JSON.parse(fs.readFileSync(`${libraryPath}/package.json`, 'utf8')).name.replace(/ /g, '-');
     const location = `${libraryPath}/dist/${name}.js`;
 
     shell.cp(path.join(templatePath, 'index.js'), location);
-    shell.cp('-R', path.join(webcomponent, 'bundles'), `${libraryPath}/dist/bundles`);
+    shell.cp('-R', getRightPathLocation(`${webcomponent}/bundles`), `${libraryPath}/dist/bundles`);
 
     checkExistsWithTimeout(`${libraryPath}/dist/only.components.min.js`).then(() => {
+      const es5Path = getRightPathLocation(`${webcomponent}/custom-elements-es5-adapter.js`);
+      const loaderPath = getRightPathLocation(`${webcomponent}/webcomponents-loader.js`);
       const file = shell.ls(location);
       const component = fs.readFileSync(`${libraryPath}/dist/only.components.min.js`, 'utf8');
-      const es5 = fs.readFileSync(`${webcomponent}/custom-elements-es5-adapter.js`, 'utf8');
-      const loader = fs.readFileSync(`${webcomponent}/webcomponents-loader.js`, 'utf8');
+      const es5 = fs.readFileSync(es5Path, 'utf8');
+      const loader = fs.readFileSync(loaderPath, 'utf8');
 
       shell.sed('-i', /_INSERT_ES5_ADAPTER_/g, es5, file);
       shell.sed('-i', /_INSERT_WEBCOMPONENT_LOADER_/g, loader, file);
@@ -154,16 +163,18 @@ const createStyles = (isSilent, options) => {
     const cssInput = options.globalStyle.input;
     const cssOutput = options.globalStyle.output;
 
-    return new Promise((resolve) => {
-      const output = (code, stdout, stderr) => {
-        if (!isSilent) {
-          const message = code === 0 ? 'Creating styles...' : `Something went wrong: ${stderr}`;
-          shell.echo(message);
-        }
-        return resolve();
-      };
+    return checkExistsWithTimeout(cssInput).then(() => {
+      return new Promise((resolve) => {
+        const output = (code, stdout, stderr) => {
+          if (!isSilent) {
+            const message = code === 0 ? 'Creating styles...' : `Something went wrong: ${stderr}`;
+            shell.echo(message);
+          }
+          return resolve();
+        };
 
-      shell.exec(`${less} ${cssInput} ${cssOutput} --autoprefix='last 2 versions' --clean-css='--level=2 --advanced --compatibility=ie11'`, output);
+        shell.exec(`${less} ${cssInput} ${cssOutput} --autoprefix='last 2 versions' --clean-css='--level=2 --advanced --compatibility=ie11'`, output);
+      });
     });
   }
 };
@@ -226,7 +237,6 @@ const serveFiles = (config, port, options = {}) => {
   const rollupEnv = options.environments ? Object.keys(options.environments).map(env => `${env}:${options.environments[env]}`).join() : '';
 
   let commands = `${concurrently} -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? ` --environment ${rollupEnv}` : ''} -c ${config} -w"`;
-
   if (options && options.commands) {
     options.commands.forEach((command) => {
       commands += ` "${command}"`;
@@ -257,5 +267,6 @@ export {
   serveFiles,
   buildStorybook,
   types,
+  getRightPathLocation,
   CONSTANTS
 };

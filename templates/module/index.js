@@ -27,10 +27,8 @@
 
   _INSERT_WEBCOMPONENT_LOADER_
 
-  //_INLINE_STYLES_
-
   window.addEventListener('WebComponentsReady', function() {
-
+    //_INLINE_STYLES_
     _INSERT_COMPONENT_JS_
   });
 

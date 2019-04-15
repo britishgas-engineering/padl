@@ -17,7 +17,7 @@ if (!process.env.NO_LIVERELOAD) {
     watch: dir_watch,
     exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
     applyCSSLive: true,
-    delay: 500
+    delay: 800
   });
   plugins.push(livereloadPlugin);
 }

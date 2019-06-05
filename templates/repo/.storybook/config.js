@@ -1,13 +1,13 @@
 import { configure, getStorybook, addDecorator } from '@storybook/html';
 import { themes } from '@storybook/components';
-import { checkA11y } from '@storybook/addon-a11y';
+import { withA11y } from '@storybook/addon-a11y';
 import { withKnobs } from '@storybook/addon-knobs/html';
 import { configureViewport } from '@storybook/addon-viewport';
 
 import '../dist/polyfill.js';
 import '../dist/components.js';
 
-addDecorator(checkA11y);
+addDecorator(withA11y);
 addDecorator(withKnobs);
 configureViewport();
 

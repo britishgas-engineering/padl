@@ -80,30 +80,39 @@ const missingArg = (type, message) => {
 };
 
 const checkExistsWithTimeout = (filePath, timeout = 10000) => {
-    return new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-            watcher.close();
-            console.log('Cannot find component files');
-        }, timeout);
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+        if (watcher) {
+          watcher.close();
+        }
 
-        fs.access(filePath, fs.constants.R_OK, (err) => {
-            if (!err) {
-                clearTimeout(timer);
-                watcher.close();
-                resolve();
-            }
-        });
+        console.log('Cannot find component files');
+    }, timeout);
 
-        const dir = path.dirname(filePath);
-        const basename = path.basename(filePath);
-        const watcher = fs.watch(dir, (eventType, filename) => {
-            if (eventType === 'rename' && filename === basename) {
-                clearTimeout(timer);
-                watcher.close();
-                resolve();
-            }
-        });
+    fs.access(filePath, fs.constants.R_OK, (err) => {
+      if (!err) {
+        clearTimeout(timer);
+        if (watcher) {
+          watcher.close();
+        }
+        resolve();
+      }
     });
+
+    const dir = path.dirname(filePath);
+    const basename = path.basename(filePath);
+    const watcher = fs.watch(dir, (eventType, filename) => {
+      if (eventType === 'rename' && filename === basename) {
+        clearTimeout(timer);
+
+        if (watcher) {
+          watcher.close();
+        }
+
+        resolve();
+      }
+    });
+  });
 }
 
 const createModule = (options) => {
@@ -195,6 +204,7 @@ const buildFiles = (config, isSilent, options) => {
   const copyFiles = () => {
     if (options && options.static) {
       shell.echo('Copying files...');
+
       options.static.forEach((dir) => {
         shell.cp('-R', dir, `./dist/${dir.split(/[/]+/).pop()}`);
       });

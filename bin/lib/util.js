@@ -21,7 +21,7 @@ const rollupPath = getRightPathLocation('.bin/rollup');
 const concurrentlyPath = getRightPathLocation('.bin/concurrently');
 const lessPath = getRightPathLocation('.bin/lessc');
 
-const cliPath = path.join(path.dirname(__filename), '../..');
+const cliPath = path.join(path.dirname(__filename), '..', '..');
 
 const concurrently = concurrentlyPath ? concurrentlyPath : `concurrently` ;
 const rollup = rollupPath ? rollupPath : `rollup`;

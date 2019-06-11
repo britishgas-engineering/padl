@@ -55,7 +55,8 @@ const runtimePath = path.join(cliPath, '..', '..', runtimeModule);
 const es5 = fs.existsSync(es5Path) ? es5Path : es5Module;
 const webBundle = fs.existsSync(webBundlePath) ? webBundlePath : webBundleModule;
 const relativeRunTime = path.join('..', '..', runtimeModule);
-const runtime = fs.existsSync(runtimePath) ? runtimePath : fs.existsSync(relativeRunTime) ? relativeRunTime : `node_modules/padl/${runtimeModule}`;
+const nodeRunTime = path.join('node_modules', 'padl', runtimeModule);
+const runtime = fs.existsSync(runtimePath) ? runtimePath : fs.existsSync(relativeRunTime) ? relativeRunTime : nodeRunTime;
 
 const warning = {
   onwarn(warning, warn) {

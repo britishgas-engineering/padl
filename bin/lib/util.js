@@ -6,9 +6,9 @@ import findModules from 'find-node-modules';
 
 shell.config.silent = true;
 
-const getRightPathLocation = (path) => {
+const getRightPathLocation = (dir) => {
   return findModules().map((nodePath) => {
-    const totalPath = `${nodePath}/${path}`;
+    const totalPath = path.join(nodePath, dir);
 
     if(fs.existsSync(totalPath)) {
       return totalPath;
@@ -17,9 +17,9 @@ const getRightPathLocation = (path) => {
 };
 
 const libraryPath = process.cwd();
-const rollupPath = getRightPathLocation('.bin/rollup');
-const concurrentlyPath = getRightPathLocation('.bin/concurrently');
-const lessPath = getRightPathLocation('.bin/lessc');
+const rollupPath = getRightPathLocation(path.join('.bin', 'rollup'));
+const concurrentlyPath = getRightPathLocation(path.join('.bin', 'concurrently'));
+const lessPath = getRightPathLocation(path.join('.bin', 'lessc'));
 
 const cliPath = path.join(path.dirname(__filename), '..', '..');
 
@@ -27,13 +27,13 @@ const concurrently = concurrentlyPath ? concurrentlyPath : `concurrently` ;
 const rollup = rollupPath ? rollupPath : `rollup`;
 const less = lessPath ? lessPath : `lessc`;
 
-const story2sketch = getRightPathLocation('.bin/story2sketch');
+const story2sketch = getRightPathLocation(path.join('.bin', 'story2sketch'));
 const rollupConfig = path.join(cliPath, 'build', 'rollup', 'rollup.config.js');
 const rollupServeConfig = path.join(cliPath, 'build', 'rollup', 'rollup.test.config.js');
 const rollupModuleConfig = path.join(cliPath, 'build', 'rollup', 'rollup.module.config.js');
-const storybookStart = getRightPathLocation('.bin/start-storybook');
-const storybookBuild = getRightPathLocation('.bin/build-storybook');
-const wct = getRightPathLocation('.bin/wct');
+const storybookStart = getRightPathLocation(path.join('.bin', 'start-storybook'));
+const storybookBuild = getRightPathLocation(path.join('.bin', 'build-storybook'));
+const wct = getRightPathLocation(path.join('.bin', 'wct'));
 
 const CONSTANTS = {
   cliPath,
@@ -124,17 +124,17 @@ const createModule = (options) => {
   ) {
     const webcomponent = path.join('@webcomponents', 'webcomponentsjs');
     const templatePath = path.join(cliPath, 'templates', 'module');
-    const name = JSON.parse(fs.readFileSync(`${libraryPath}/package.json`, 'utf8')).name.replace(/ /g, '-');
-    const location = `${libraryPath}/dist/${name}.js`;
+    const name = JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).name.replace(/ /g, '-');
+    const location = path.join(libraryPath, 'dist', `${name}.js`);
 
     shell.cp(path.join(templatePath, 'index.js'), location);
-    shell.cp('-R', getRightPathLocation(`${webcomponent}/bundles`), `${libraryPath}/dist/bundles`);
+    shell.cp('-R', getRightPathLocation(path.join(webcomponent, 'bundles')), path.join(libraryPath, 'dist', 'bundles'));
 
-    checkExistsWithTimeout(`${libraryPath}/dist/only.components.min.js`).then(() => {
-      const es5Path = getRightPathLocation(`${webcomponent}/custom-elements-es5-adapter.js`);
-      const loaderPath = getRightPathLocation(`${webcomponent}/webcomponents-loader.js`);
+    checkExistsWithTimeout(path.join(libraryPath, 'dist', 'only.components.min.js')).then(() => {
+      const es5Path = getRightPathLocation(path.join(webcomponent, 'custom-elements-es5-adapter.js'));
+      const loaderPath = getRightPathLocation(path.join(webcomponent, 'webcomponents-loader.js'));
       const file = shell.ls(location);
-      const component = fs.readFileSync(`${libraryPath}/dist/only.components.min.js`, 'utf8');
+      const component = fs.readFileSync(path.join(libraryPath, 'dist', 'only.components.min.js'), 'utf8');
       const es5 = fs.readFileSync(es5Path, 'utf8');
       const loader = fs.readFileSync(loaderPath, 'utf8');
 
@@ -162,7 +162,7 @@ const createModule = (options) => {
         shell.sed('-i', /_INLINE_STYLES_/g, content, file);
       }
 
-      shell.exec(`${rollup} -c ${rollupModuleConfig} --no-strict`);
+      shell.exec(`"${rollup}" -c ${rollupModuleConfig} --no-strict`);
     });
   }
 };
@@ -182,7 +182,7 @@ const createStyles = (isSilent, options) => {
           return resolve();
         };
 
-        shell.exec(`${less} ${cssInput} ${cssOutput} --autoprefix='last 2 versions' --clean-css='--level=2 --advanced --compatibility=ie11'`, output);
+        shell.exec(`"${less}" ${cssInput} ${cssOutput} --autoprefix='last 2 versions' --clean-css='--level=2 --advanced --compatibility=ie11'`, output);
       });
     });
   }
@@ -206,7 +206,8 @@ const buildFiles = (config, isSilent, options) => {
       shell.echo('Copying files...');
 
       options.static.forEach((dir) => {
-        shell.cp('-R', dir, `./dist/${dir.split(/[/]+/).pop()}`);
+        const fileDir = path.join('.', 'dist', dir.split(/[/]+/).pop());
+        shell.cp('-R', dir, fileDir);
       });
     };
   };
@@ -226,14 +227,15 @@ const buildFiles = (config, isSilent, options) => {
     shell.rm('-rf', 'dist');
     shell.echo('Building files...');
     createStyles(isSilent, options);
-    shell.exec(`${rollup} -c ${config}`, output);
+
+    shell.exec(`"${rollup}" -c ${config}`, output);
   });
 };
 
 const buildStorybook = (config) => {
   return new Promise((resolve) => {
     shell.echo('Building storybook...');
-    shell.exec(`${storybookBuild} -c ${config} -o dist/demo`, (code, stdout, stderr) => {
+    shell.exec(`"${storybookBuild}" -c ${config} -o dist/demo`, (code, stdout, stderr) => {
       if (stderr) {
         console.log('err: ', stderr);
       }
@@ -246,7 +248,7 @@ const serveFiles = (config, port, options = {}) => {
   const storybook = `${storybookStart} -p ${port} -c .storybook -s ./dist`;
   const rollupEnv = options.environments ? Object.keys(options.environments).map(env => `${env}:${options.environments[env]}`).join() : '';
 
-  let commands = `${concurrently} -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? ` --environment ${rollupEnv}` : ''} -c ${config} -w"`;
+  let commands = `"${concurrently}" -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? ` --environment ${rollupEnv}` : ''} -c ${config} -w"`;
   if (options && options.commands) {
     options.commands.forEach((command) => {
       commands += ` "${command}"`;

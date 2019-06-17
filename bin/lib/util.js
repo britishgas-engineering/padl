@@ -27,7 +27,6 @@ const concurrently = concurrentlyPath ? concurrentlyPath : `concurrently` ;
 const rollup = rollupPath ? rollupPath : `rollup`;
 const less = lessPath ? lessPath : `lessc`;
 
-const story2sketch = getRightPathLocation(path.join('.bin', 'story2sketch'));
 const rollupConfig = path.join(cliPath, 'build', 'rollup', 'rollup.config.js');
 const rollupServeConfig = path.join(cliPath, 'build', 'rollup', 'rollup.test.config.js');
 const rollupModuleConfig = path.join(cliPath, 'build', 'rollup', 'rollup.module.config.js');
@@ -39,7 +38,6 @@ const CONSTANTS = {
   cliPath,
   concurrently,
   rollup,
-  story2sketch,
   rollupConfig,
   rollupServeConfig,
   rollupModuleConfig,
@@ -52,7 +50,6 @@ const types = {
   test: 'test',
   new: 'newRepo',
   build: 'build',
-  sketch: 'sketch',
   serve: 'serve',
   delete: 'd',
   d: 'd',

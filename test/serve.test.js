@@ -25,7 +25,7 @@ test('run serve', (t) => {
   t.deepEqual(echo.args[0], ['Cleaning cache...'], 'Cleaning cache message');
   t.deepEqual(rm.args[0], ['-rf', 'dist'], 'Removing files in dist');
   t.deepEqual(echo.args[1], ['Building files...'], 'Building files message');
-  t.deepEqual(exec.args[0][0], `node_modules/.bin/rollup -c ${config}`);
+  t.deepEqual(exec.args[0][0], `"node_modules/.bin/rollup" -c ${config}`);
 
   sinon.restore();
 });

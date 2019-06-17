@@ -62,7 +62,7 @@ export default (args) => {
 
     write.sync('dist/test-fixtures.js', fixtureContent);
     shell.echo('Running tests...');
-    shell.exec(`${wct} --npm ${isHeadless ? `--config-file wct.headless.config.json` : ''} ${isPersistent ? '-p' : ''}`, (code, stdout, stderr) => {
+    shell.exec(`"${wct}" --npm ${isHeadless ? `--config-file wct.headless.config.json` : ''} ${isPersistent ? '-p' : ''}`, (code, stdout, stderr) => {
         console.log(code === 0 ? stdout : stdout + stderr);
         if (code === 1) {
           process.exit(1);

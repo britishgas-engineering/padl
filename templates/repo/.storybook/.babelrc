@@ -3,13 +3,13 @@
     "dist/*.js"
   ],
   "presets": [
-    ["env", {
+    ["@babel/env", {
       "targets": {
         "browsers": ["last 2 versions"],
         "ie": 11
       },
       "loose": true,
-      "useBuiltIns": true
+      "useBuiltIns": "entry"
     }]
   ]
 }

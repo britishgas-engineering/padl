@@ -2,29 +2,38 @@ import shell from 'shelljs';
 import path from 'path';
 import chokidar from 'chokidar';
 import fs from 'fs';
+import findModules from 'find-node-modules';
 
 shell.config.silent = true;
 
-const rollupBin = 'node_modules/.bin/rollup';
-const concurrentlyBin = 'node_modules/.bin/concurrently';
-const lessBin = 'node_modules/.bin/lessc';
+const getRightPathLocation = (dir) => {
+  return findModules().map((nodePath) => {
+    const totalPath = path.join(nodePath, dir);
 
-const cliPath = path.join(path.dirname(__filename), '../..');
-const rollupPath = path.join(cliPath, rollupBin);
-const concurrentlyPath = path.join(cliPath, concurrentlyBin);
-const lessPath = path.join(cliPath, lessBin);
+    if(fs.existsSync(totalPath)) {
+      return totalPath;
+    }
+  }).filter(nodePath => nodePath)[0];
+};
 
-const concurrently = fs.existsSync(concurrentlyPath) ? concurrentlyPath : concurrentlyBin;
-const rollup = fs.existsSync(rollupPath) ? rollupPath : rollupBin;
-const less = fs.existsSync(lessPath) ? lessPath : lessBin;
+const libraryPath = process.cwd();
+const rollupPath = getRightPathLocation(path.join('.bin', 'rollup'));
+const concurrentlyPath = getRightPathLocation(path.join('.bin', 'concurrently'));
+const lessPath = getRightPathLocation(path.join('.bin', 'lessc'));
 
-const story2sketch = path.join(cliPath, 'node_modules/.bin/story2sketch');
-const rollupConfig = path.join(cliPath, 'rollup.config.js');
-const rollupServeConfig = path.join(cliPath, 'rollup.test.config.js');
-const rollupModuleConfig = path.join(cliPath, 'rollup.module.config.js');
-const storybookStart = 'node_modules/.bin/start-storybook';
-const storybookBuild = 'node_modules/.bin/build-storybook';
-const wct = 'node_modules/.bin/wct';
+const cliPath = path.join(path.dirname(__filename), '..', '..');
+
+const concurrently = concurrentlyPath ? concurrentlyPath : `concurrently` ;
+const rollup = rollupPath ? rollupPath : `rollup`;
+const less = lessPath ? lessPath : `lessc`;
+
+const story2sketch = getRightPathLocation(path.join('.bin', 'story2sketch'));
+const rollupConfig = path.join(cliPath, 'build', 'rollup', 'rollup.config.js');
+const rollupServeConfig = path.join(cliPath, 'build', 'rollup', 'rollup.test.config.js');
+const rollupModuleConfig = path.join(cliPath, 'build', 'rollup', 'rollup.module.config.js');
+const storybookStart = getRightPathLocation(path.join('.bin', 'start-storybook'));
+const storybookBuild = getRightPathLocation(path.join('.bin', 'build-storybook'));
+const wct = getRightPathLocation(path.join('.bin', 'wct'));
 
 const CONSTANTS = {
   cliPath,
@@ -70,6 +79,42 @@ const missingArg = (type, message) => {
   }
 };
 
+const checkExistsWithTimeout = (filePath, timeout = 10000) => {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+        if (watcher) {
+          watcher.close();
+        }
+
+        console.log('Cannot find component files');
+    }, timeout);
+
+    fs.access(filePath, fs.constants.R_OK, (err) => {
+      if (!err) {
+        clearTimeout(timer);
+        if (watcher) {
+          watcher.close();
+        }
+        resolve();
+      }
+    });
+
+    const dir = path.dirname(filePath);
+    const basename = path.basename(filePath);
+    const watcher = fs.watch(dir, (eventType, filename) => {
+      if (eventType === 'rename' && filename === basename) {
+        clearTimeout(timer);
+
+        if (watcher) {
+          watcher.close();
+        }
+
+        resolve();
+      }
+    });
+  });
+}
+
 const createModule = (options) => {
   if (
     !(options &&
@@ -77,46 +122,48 @@ const createModule = (options) => {
     options.environments.BUILD &&
     options.environments.BUILD === 'serve')
   ) {
-    const webcomponent = path.join('node_modules', '@webcomponents', 'webcomponentsjs');
-    const runtime = path.join(cliPath, 'node_modules', 'regenerator-runtime');
+    const webcomponent = path.join('@webcomponents', 'webcomponentsjs');
     const templatePath = path.join(cliPath, 'templates', 'module');
-    const name = JSON.parse(fs.readFileSync(`package.json`, 'utf8')).name.replace(/ /g, '-');
-    const location = `dist/${name}.js`;
+    const name = JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).name.replace(/ /g, '-');
+    const location = path.join(libraryPath, 'dist', `${name}.js`);
 
     shell.cp(path.join(templatePath, 'index.js'), location);
-    shell.cp('-R', path.join(webcomponent, 'bundles'), `./dist/bundles`);
+    shell.cp('-R', getRightPathLocation(path.join(webcomponent, 'bundles')), path.join(libraryPath, 'dist', 'bundles'));
 
-    const file = shell.ls(location);
-    const component = fs.readFileSync(`dist/only.components.min.js`, 'utf8');
-    const es5 = fs.readFileSync(`${webcomponent}/custom-elements-es5-adapter.js`, 'utf8');
-    const loader = fs.readFileSync(`${webcomponent}/webcomponents-loader.js`, 'utf8');
+    checkExistsWithTimeout(path.join(libraryPath, 'dist', 'only.components.min.js')).then(() => {
+      const es5Path = getRightPathLocation(path.join(webcomponent, 'custom-elements-es5-adapter.js'));
+      const loaderPath = getRightPathLocation(path.join(webcomponent, 'webcomponents-loader.js'));
+      const file = shell.ls(location);
+      const component = fs.readFileSync(path.join(libraryPath, 'dist', 'only.components.min.js'), 'utf8');
+      const es5 = fs.readFileSync(es5Path, 'utf8');
+      const loader = fs.readFileSync(loaderPath, 'utf8');
 
-    shell.sed('-i', /_INSERT_ES5_ADAPTER_/g, es5, file);
-    shell.sed('-i', /_INSERT_WEBCOMPONENT_LOADER_/g, loader, file);
-    shell.sed('-i', /_INSERT_COMPONENT_JS_/g, component, file);
-    shell.sed('-i', /_INSERT_NAME_/g, `${name}.?m?i?n?.js`, file);
+      shell.sed('-i', /_INSERT_ES5_ADAPTER_/g, es5, file);
+      shell.sed('-i', /_INSERT_WEBCOMPONENT_LOADER_/g, loader, file);
+      shell.sed('-i', /_INSERT_COMPONENT_JS_/g, component, file);
+      shell.sed('-i', /_INSERT_NAME_/g, `${name}.?m?i?n?.js`, file);
 
-    if (options && options.globalStyle  && options.globalStyle.inline) {
-      let inlineContent = '';
-      try {
-        inlineContent = fs.readFileSync(options.globalStyle.output).toString().replace(/"/g, "'").replace(/\\/g, '\\\\');
+      if (options && options.globalStyle  && options.globalStyle.inline) {
+        let inlineContent = '';
+        try {
+          inlineContent = fs.readFileSync(options.globalStyle.output).toString().replace(/"/g, "'").replace(/\\/g, '\\\\');
+        }
+        catch (e) {
+          console.log(`${e}`);
+        }
+
+        const content = `
+        const style = document.createElement('style');
+        const ref = document.querySelector('script');
+        style.innerHTML = "${inlineContent}";
+        ref.parentNode.insertBefore(style, ref);
+        `;
+
+        shell.sed('-i', /_INLINE_STYLES_/g, content, file);
       }
-      catch (e) {
-        console.log(`${e}`);
-      }
 
-      const content = `
-      const style = document.createElement('style');
-      const ref = document.querySelector('script');
-      style.innerHTML = "${inlineContent}";
-      ref.parentNode.insertBefore(style, ref);
-      `;
-
-      shell.sed('-i', /_INLINE_STYLES_/g, content, file);
-    }
-
-    shell.exec(`${rollup} -c ${rollupModuleConfig} --no-strict`);
-
+      shell.exec(`"${rollup}" -c ${rollupModuleConfig} --no-strict`);
+    });
   }
 };
 
@@ -125,16 +172,18 @@ const createStyles = (isSilent, options) => {
     const cssInput = options.globalStyle.input;
     const cssOutput = options.globalStyle.output;
 
-    return new Promise((resolve) => {
-      const output = (code, stdout, stderr) => {
-        if (!isSilent) {
-          const message = code === 0 ? 'Creating styles...' : `Something went wrong: ${stderr}`;
-          shell.echo(message);
-        }
-        return resolve();
-      };
+    return checkExistsWithTimeout(cssInput).then(() => {
+      return new Promise((resolve) => {
+        const output = (code, stdout, stderr) => {
+          if (!isSilent) {
+            const message = code === 0 ? 'Creating styles...' : `Something went wrong: ${stderr}`;
+            shell.echo(message);
+          }
+          return resolve();
+        };
 
-      shell.exec(`${less} ${cssInput} ${cssOutput} --autoprefix='last 2 versions' --clean-css='--level=2 --advanced --compatibility=ie11'`, output);
+        shell.exec(`"${less}" ${cssInput} ${cssOutput} --autoprefix='last 2 versions' --clean-css='--level=2 --advanced --compatibility=ie11'`, output);
+      });
     });
   }
 };
@@ -155,8 +204,10 @@ const buildFiles = (config, isSilent, options) => {
   const copyFiles = () => {
     if (options && options.static) {
       shell.echo('Copying files...');
+
       options.static.forEach((dir) => {
-        shell.cp('-R', dir, `./dist/${dir.split(/[/]+/).pop()}`);
+        const fileDir = path.join('.', 'dist', dir.split(/[/]+/).pop());
+        shell.cp('-R', dir, fileDir);
       });
     };
   };
@@ -176,14 +227,15 @@ const buildFiles = (config, isSilent, options) => {
     shell.rm('-rf', 'dist');
     shell.echo('Building files...');
     createStyles(isSilent, options);
-    shell.exec(`${rollup} -c ${config}`, output);
+
+    shell.exec(`"${rollup}" -c ${config}`, output);
   });
 };
 
 const buildStorybook = (config) => {
   return new Promise((resolve) => {
     shell.echo('Building storybook...');
-    shell.exec(`${storybookBuild} -c ${config} -o dist/demo`, (code, stdout, stderr) => {
+    shell.exec(`"${storybookBuild}" -c ${config} -o dist/demo`, (code, stdout, stderr) => {
       if (stderr) {
         console.log('err: ', stderr);
       }
@@ -196,8 +248,7 @@ const serveFiles = (config, port, options = {}) => {
   const storybook = `${storybookStart} -p ${port} -c .storybook -s ./dist`;
   const rollupEnv = options.environments ? Object.keys(options.environments).map(env => `${env}:${options.environments[env]}`).join() : '';
 
-  let commands = `${concurrently} -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? ` --environment ${rollupEnv}` : ''} -c ${config} -w"`;
-
+  let commands = `"${concurrently}" -p -n -r --kill-others "${storybook}" "${rollup}${rollupEnv ? ` --environment ${rollupEnv}` : ''} -c ${config} -w"`;
   if (options && options.commands) {
     options.commands.forEach((command) => {
       commands += ` "${command}"`;
@@ -228,5 +279,6 @@ export {
   serveFiles,
   buildStorybook,
   types,
+  getRightPathLocation,
   CONSTANTS
 };

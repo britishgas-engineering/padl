@@ -6,7 +6,7 @@ import {
   livereload
 } from './rollup.default.config';
 
-let dir_watch = ['src', 'dist'];
+let dir_watch = ['src', 'dist/**'];
 
 if (process.env.WATCH_DIR) {
   process.env.WATCH_DIR.split(',').forEach((dir) => dir_watch.push(dir));
@@ -16,7 +16,8 @@ if (!process.env.NO_LIVERELOAD) {
   const livereloadPlugin = livereload({
     watch: dir_watch,
     exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
-    applyCSSLive: true
+    applyCSSLive: true,
+    delay: 800
   });
   plugins.push(livereloadPlugin);
 }

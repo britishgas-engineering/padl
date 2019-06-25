@@ -1,7 +1,8 @@
 import fs from 'fs';
 import {
   warning,
-  terser
+  terser,
+  plugins
 } from './rollup.default.config';
 
 const name = JSON.parse(fs.readFileSync(`package.json`, 'utf8')).name.replace(/ /g, '-');
@@ -14,7 +15,7 @@ export default [
       format: 'esm',
       file: `dist/${name}.min.js`
     },
-    plugins: [terser()],
+    plugins: [...plugins, terser()],
     ...warning
   }
 ]

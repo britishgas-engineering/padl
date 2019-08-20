@@ -112,7 +112,7 @@ const checkExistsWithTimeout = (filePath, timeout = 10000) => {
   });
 }
 
-const createModule = (options, config) => {
+const createModule = (options) => {
   if (
     !(options &&
     options.environments &&
@@ -121,6 +121,7 @@ const createModule = (options, config) => {
   ) {
     const webcomponent = path.join('@webcomponents', 'webcomponentsjs');
     const templatePath = path.join(cliPath, 'templates', 'module');
+    const config = JSON.parse(fs.readFileSync('.padl').toString());
     const name = config.name || JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).name.replace(/ /g, '-');
     const location = path.join(libraryPath, 'dist', `${name}.js`);
 
@@ -212,7 +213,7 @@ const buildFiles = (config, isSilent, options) => {
   return new Promise((resolve) => {
     const output = (code, stdout, stderr) => {
       copyFiles(isSilent);
-      createModule(options, config);
+      createModule(options);
       if (!isSilent) {
         const message = code === 0 ? '🎉 Files have now been built' : `Something went wrong: ${stderr}`;
         shell.echo(message);

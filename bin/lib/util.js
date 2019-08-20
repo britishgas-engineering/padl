@@ -112,7 +112,7 @@ const checkExistsWithTimeout = (filePath, timeout = 10000) => {
   });
 }
 
-const createModule = (options) => {
+const createModule = (options, config) => {
   if (
     !(options &&
     options.environments &&
@@ -121,7 +121,7 @@ const createModule = (options) => {
   ) {
     const webcomponent = path.join('@webcomponents', 'webcomponentsjs');
     const templatePath = path.join(cliPath, 'templates', 'module');
-    const name = JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).name.replace(/ /g, '-');
+    const name = config.name || JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).name.replace(/ /g, '-');
     const location = path.join(libraryPath, 'dist', `${name}.js`);
 
     shell.cp(path.join(templatePath, 'index.js'), location);
@@ -212,7 +212,7 @@ const buildFiles = (config, isSilent, options) => {
   return new Promise((resolve) => {
     const output = (code, stdout, stderr) => {
       copyFiles(isSilent);
-      createModule(options);
+      createModule(options, config);
       if (!isSilent) {
         const message = code === 0 ? '🎉 Files have now been built' : `Something went wrong: ${stderr}`;
         shell.echo(message);

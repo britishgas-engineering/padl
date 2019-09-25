@@ -158,6 +158,10 @@ const createModule = (options) => {
         `;
 
         shell.sed('-i', /_INLINE_STYLES_/g, content, file);
+
+        if (options.hostname) {
+          shell.sed('-i', /_INSERT_HOSTNAME_/g, options.hostname, file);
+        }
       }
 
       shell.exec(`"${rollup}" -c ${rollupModuleConfig} --no-strict`);

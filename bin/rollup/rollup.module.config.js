@@ -13,7 +13,7 @@ export default [
     input: `dist/${name}.js`,
     output: {
       name: 'polymerElement',
-      format: 'esm',
+      format: 'es',
       file: `dist/${name}.min.js`
     },
     plugins: [...plugins, terser()],

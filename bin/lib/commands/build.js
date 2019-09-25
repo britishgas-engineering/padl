@@ -11,6 +11,10 @@ export default (args) => {
     options.globalStyle = args.config.globalStyle;
   };
 
+  if (args.config && args.config.hostname) {
+    options.hostname = args.config.hostname;
+  };
+
   util.buildFiles(util.CONSTANTS.rollupConfig, false, options).then(() => {
     if (args.storybook) {
       util.buildStorybook('.storybook');

@@ -30,7 +30,6 @@ test('check `types` commands', (t) => {
 	t.is(util.types.test, 'test');
 	t.is(util.types.new, 'newRepo');
 	t.is(util.types.build, 'build');
-	t.is(util.types.sketch, 'sketch');
 	t.is(util.types.serve, 'serve');
 	t.is(util.types.delete, 'd');
 	t.is(util.types.d, 'd');

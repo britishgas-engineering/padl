@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "0.3.7",
+  "version": "0.3.8-alpha.2",
   "description": "Develop pattern libraries with lit-element",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {
@@ -40,9 +40,8 @@
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-nodent": "^0.2.2",
-    "rollup-plugin-terser": "^4.0.2",
+    "rollup-plugin-terser": "^5.1.1",
     "shelljs": "^0.8.3",
-    "story2sketch": "github:jholt1/story2sketch#compile",
     "write": "^1.0.3"
   },
   "bin": {

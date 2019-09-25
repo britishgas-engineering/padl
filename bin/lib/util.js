@@ -27,7 +27,6 @@ const concurrently = concurrentlyPath ? concurrentlyPath : `concurrently` ;
 const rollup = rollupPath ? rollupPath : `rollup`;
 const less = lessPath ? lessPath : `lessc`;
 
-const story2sketch = getRightPathLocation(path.join('.bin', 'story2sketch'));
 const rollupConfig = path.join(cliPath, 'build', 'rollup', 'rollup.config.js');
 const rollupServeConfig = path.join(cliPath, 'build', 'rollup', 'rollup.test.config.js');
 const rollupModuleConfig = path.join(cliPath, 'build', 'rollup', 'rollup.module.config.js');
@@ -39,7 +38,6 @@ const CONSTANTS = {
   cliPath,
   concurrently,
   rollup,
-  story2sketch,
   rollupConfig,
   rollupServeConfig,
   rollupModuleConfig,
@@ -52,7 +50,6 @@ const types = {
   test: 'test',
   new: 'newRepo',
   build: 'build',
-  sketch: 'sketch',
   serve: 'serve',
   delete: 'd',
   d: 'd',
@@ -124,7 +121,8 @@ const createModule = (options) => {
   ) {
     const webcomponent = path.join('@webcomponents', 'webcomponentsjs');
     const templatePath = path.join(cliPath, 'templates', 'module');
-    const name = JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).name.replace(/ /g, '-');
+    const config = JSON.parse(fs.readFileSync('.padl').toString());
+    const name = config.name || JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).name.replace(/ /g, '-');
     const location = path.join(libraryPath, 'dist', `${name}.js`);
 
     shell.cp(path.join(templatePath, 'index.js'), location);
@@ -160,6 +158,10 @@ const createModule = (options) => {
         `;
 
         shell.sed('-i', /_INLINE_STYLES_/g, content, file);
+
+        if (options.hostname) {
+          shell.sed('-i', /_INSERT_HOSTNAME_/g, options.hostname, file);
+        }
       }
 
       shell.exec(`"${rollup}" -c ${rollupModuleConfig} --no-strict`);

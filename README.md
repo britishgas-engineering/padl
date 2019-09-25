@@ -211,22 +211,9 @@ In your `dist` folder will find the `components.min.js`
    padl test -h
   ```
 
-### Create sketch files of components (ALPHA - WIP)
-
-Inside your pattern library
-
-```
- padl sketch
-```
-
-This will output a `stories.asketch.json` file. You will need to install this sketch plugin [`asketch2sketch.sketchplugin`](https://github.com/brainly/html-sketchapp/releases/download/v3.3.1/asketch2sketch-3-3-1.sketchplugin.zip)
-
 ## Dependencies
 
  This uses a variety of other resources:
 
- - Polymer
  - Lit Element
  - Storybook
- - Story2sketch
- - Html-sketchapp

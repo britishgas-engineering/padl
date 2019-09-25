@@ -73,7 +73,7 @@ const main = [
     ],
     output: {
       file: 'dist/polyfill.js',
-      format: 'esm'
+      format: 'es'
     },
     plugins: [multiEntry()],
     ...warning
@@ -86,7 +86,7 @@ const standard = [
     input: [`${runtime}`,'src/**/component.js'],
     output: {
       name: 'polymerElement',
-      format: 'esm',
+      format: 'es',
       file: 'dist/components.js'
     },
     plugins,

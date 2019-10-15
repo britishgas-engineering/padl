@@ -15,8 +15,9 @@
   ],
   "author": "Jonathan Holt",
   "license": "MIT",
+  "repository": "https://github.com/britishgas-engineering/padl",
   "dependencies": {
-    "@webcomponents/webcomponentsjs": "^2.2.10",
+    "@webcomponents/webcomponentsjs": "^2.3.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -35,7 +36,7 @@
     "rollup": "^1.14.2",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-less": "github:jholt1/rollup-plugin-less#compile",
-    "rollup-plugin-livereload": "^1.0.1",
+    "rollup-plugin-livereload": "^1.0.3",
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-nodent": "^0.2.2",
@@ -54,9 +55,9 @@
     "test:coverage": "nyc ava"
   },
   "devDependencies": {
-    "ava": "2.2.0",
+    "ava": "2.4.0",
     "nyc": "^14.1.1",
-    "sinon": "^7.2.3"
+    "sinon": "^7.5.0"
   },
   "ava": {
     "require": [

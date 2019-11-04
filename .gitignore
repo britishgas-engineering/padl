@@ -1,0 +1,8 @@
+/node_modules
+/dists
+/e2e
+
+.nyc_output
+coverage
+
+*.swp

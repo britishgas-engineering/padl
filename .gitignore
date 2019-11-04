@@ -1,5 +1,5 @@
 /node_modules
-/dists
+/dist
 /e2e
 
 .nyc_output

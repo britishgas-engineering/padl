@@ -9,6 +9,7 @@
         "ie": 11
       },
       "loose": true,
+      corejs: '3',
       "useBuiltIns": "entry"
     }]
   ]

@@ -6,23 +6,15 @@
   "license": "MIT",
   "scripts": {
     "test": "padl test",
-    "serve": "padl serve",
     "start": "padl serve",
     "build": "padl build"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
-    "@storybook/addon-a11y": "^5.0.10",
-    "@storybook/addon-knobs": "^5.0.10",
-    "@storybook/addon-viewport": "^5.0.10",
-    "@storybook/html": "^5.0.10",
-    "babel-core": "6.26.3",
+    "@storybook/addon-a11y": "^5.2.5",
+    "@storybook/addon-knobs": "^5.2.5",
+    "@storybook/addon-viewport": "^5.2.5",
     "babel-loader": "^8.0.5",
-    "babel-plugin-external-helpers": "6.22.0",
-    "babel-preset-env": "1.7.0",
     "lit-element": "^2.0.1",
-    "moment": "2.22.2",
     "padl": "^REPO_VERSION",
     "wct-browser-legacy": "1.0.2",
     "web-component-tester": "6.9.2"

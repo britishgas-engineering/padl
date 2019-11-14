@@ -77,6 +77,7 @@ const createModule = (config, styles, dir) => {
         const style = document.createElement('style');
         const ref = document.querySelector('script');
         style.innerHTML = "${css}";
+        style['data-padl'] = "${name}-styles";
         ref.parentNode.insertBefore(style, ref);
         `;
     }

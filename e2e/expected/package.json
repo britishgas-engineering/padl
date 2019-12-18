@@ -1,7 +1,7 @@
 {
-  "name": "REPO_NAME",
+  "name": "hello-world",
   "version": "1.0.0",
-  "description": "Small description about REPO_NAME",
+  "description": "Small description about hello-world",
   "keywords": ["web components", "polymer", "pattern library", "lit-element"],
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
     "@storybook/addon-viewport": "^5.2.5",
     "babel-loader": "^8.0.5",
     "lit-element": "^2.0.1",
-    "padl": "^REPO_VERSION",
+    "padl": "^1.0.0-alpha.3",
     "wct-browser-legacy": "1.0.2",
     "web-component-tester": "6.9.2"
   }

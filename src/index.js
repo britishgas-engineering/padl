@@ -1,10 +1,16 @@
 #! /usr/bin/env node
 import commander from 'commander';
+import updateNotifier from 'update-notifier';
 import * as commands from './commands';
 import packageJson from '../package.json';
 import {getConfigArgs} from './util';
 
 const program = new commander.Command();
+const notifier = updateNotifier({pkg: packageJson, updateCheckInterval: 1000 * 60 * 60});
+
+console.log(notifier);
+
+notifier.notify({isGlobal: true});
 
 program.version(packageJson.version, '-v, --v, --version', 'Output the current version');
 

@@ -8,11 +8,15 @@ export default async (config) => {
     plugins: [
       visualizer({
         title: 'PaDL component bundle anlysis',
-        open: true
+        open: true,
+        filename: 'dist/stats.html'
       })
     ]
   };
 
   await build(options);
 
+  process.exit(0);
+
+  return;
 }

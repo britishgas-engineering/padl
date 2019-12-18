@@ -47,13 +47,13 @@ export default (config, name) => {
     return;
 
   };
-  const type = options.styles ? options.type : `${options.type}-no-styles`;
+  const type = options['no-styles'] ? `${options.type}-no-styles` : options.type;
   const repoDir = path.join(cliPath, 'templates', 'standard', 'component');
   const testDir = path.join(cliPath, 'templates', 'standard', 'test');
   const compDir = path.join(cliPath, 'templates', type);
 
   const filterCopy = (src) => {
-    if (!options.styles && src.includes('styles.less')) {
+    if (options['no-styles'] && src.includes('styles.less')) {
       return false;
     }
 

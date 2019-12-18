@@ -33,7 +33,14 @@ export default async (config) => {
   fs.outputFileSync('dist/test-fixtures.js', fixtureContent);
   console.log('Running tests...');
 
-  const testCmd = await runCommand(`${wct} --npm ${configFile} ${options.persistent ? '-p' : ''}`);
-  console.log('....................');
+  const testCmd = await runCommand(`${wct} --npm ${configFile} ${options.persistent ? '-p' : ''}`).catch((e) => {
+    console.log(e);
+    process.exit(1);
+  });
+
   console.log(testCmd);
+
+  process.exit(0);
+
+  return;
 }

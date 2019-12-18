@@ -52,7 +52,8 @@ export default async (config) => {
   let plugins = [
     resolve(),
     less({
-      plugins: [autoprefixPlugin, cleanCSSPlugin]
+      plugins: [autoprefixPlugin, cleanCSSPlugin],
+      output: false
     }),
     multiEntry(),
     babel(babelConfig),
@@ -83,11 +84,16 @@ export default async (config) => {
   }
 
   console.log('Building files...');
-
   // Build polyfill.js
   await rollup(polyInputs, polyfillPath, {}, [multiEntry(), resolve(), del({targets: `${dir}/**`})]);
+
   // Build component.js
   await rollup([`${cliPath}/lib/runtime.js`, 'src/**/component.js'], componentsPath, options, plugins);
+
+  if (options.from && options.from === 'analysis') {
+    return;
+  }
+
   // Build components.min.js
   await rollup([polyfillPath, componentsPath], mergedComponentsPath, {}, minPlugins);
   // Build components.only.min.js

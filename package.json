@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "Develop pattern libraries with lit-element",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {
@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "test": "ava test/*.test.js",
+    "test:e2e": "cd e2e && node run.js",
     "test:watch": "ava --watch",
     "test:coverage": "nyc ava",
     "build": "babel src -d dist",
@@ -55,12 +56,15 @@
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-visualizer": "^2.6.0"
+    "rollup-plugin-visualizer": "^3.0.0",
+    "update-notifier": "^4.0.0",
+    "web-component-analyzer": "^0.1.20"
   },
   "devDependencies": {
     "ava": "^2.4.0",
     "nyc": "^14.1.1",
-    "sinon": "^7.5.0"
+    "sinon": "^7.5.0",
+    "variable-diff": "^2.0.1"
   },
   "ava": {
     "require": [

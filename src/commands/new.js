@@ -25,7 +25,7 @@ const removeStyles = (config, name) => {
     const fileData = fs.readFileSync(`${name}/.padl`, 'utf8');
 
     const obj = JSON.parse(fileData);
-    obj['styles'] = false;
+    obj['no-styles'] = true;
 
     fs.writeFileSync(`${name}/.padl`, JSON.stringify(obj, null, 2), 'utf8');
   }

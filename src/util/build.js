@@ -70,14 +70,14 @@ const createModule = (config, styles, dir) => {
     const component = fs.readFileSync(path.join(libraryPath, dir, 'only.components.min.js'), 'utf8');
     let cssContent = '';
 
-    if (styles) {
+    if (styles && config.globalStyle && config.globalStyle.inline) {
       const css = styles.replace(/"/g, "'").replace(/\\/g, '\\\\');
 
       cssContent = `
         const style = document.createElement('style');
         const ref = document.querySelector('script');
         style.innerHTML = "${css}";
-        style['data-padl'] = "${name}-styles";
+        style.title = "${name}-styles";
         ref.parentNode.insertBefore(style, ref);
         `;
     }

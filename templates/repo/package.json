@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "padl test -h",
+    "test:p": "padl test -p",
     "start": "padl serve",
     "build": "padl build"
   },

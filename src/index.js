@@ -8,8 +8,6 @@ import {getConfigArgs} from './util';
 const program = new commander.Command();
 const notifier = updateNotifier({pkg: packageJson, updateCheckInterval: 1000 * 60 * 60});
 
-console.log(notifier);
-
 notifier.notify({isGlobal: true});
 
 program.version(packageJson.version, '-v, --v, --version', 'Output the current version');
@@ -17,8 +15,13 @@ program.version(packageJson.version, '-v, --v, --version', 'Output the current v
 program
   .command('build')
   .description('Build padl web component files')
-  .action(() => {
-    return commands.build(getConfigArgs());
+  .option('--storybook', 'Creates static storybook with build')
+  .action((options) => {
+    const config = {
+      ...getConfigArgs(),
+      ...options
+    };
+    return commands.build(config);
   });
 
 program
@@ -50,6 +53,7 @@ program
   .description('Create new library')
   .option('--no-styles', 'Create a new library that does not need styles in the component')
   .action((name, options) => {
+    // doesn't need `getConfigArgs` as config file hasn't been created.
     return commands.newRepo(options, name);
   });
 
@@ -82,6 +86,12 @@ program
     };
 
     return commands.test(config);
+  });
+
+program
+  .command('*')
+  .action(() => {
+    console.log('Unknown command, if you are stuck run padl --help');
   });
 
 program.parse(process.argv);

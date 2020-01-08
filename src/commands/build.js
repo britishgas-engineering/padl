@@ -1,5 +1,5 @@
 import rollup from '../util/rollup';
-import {babelConfig, terserConfig} from '../util';
+import {babelConfig, terserConfig, randomPort} from '../util';
 import {terser} from 'rollup-plugin-terser';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
@@ -38,13 +38,6 @@ export default async (config) => {
   const mergedComponentsPath = `${dir}/components.min.js`;
   const onlyComponentsPath = `${dir}/only.components.min.js`;
 
-  const livereloadPlugin = livereload({
-    watch: ['src/**', `${dir}/**`],
-    exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
-    applyCSSLive: true,
-    delay: 1000
-  });
-
   const polyInputs = [
     'node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js',
     'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js'
@@ -72,7 +65,19 @@ export default async (config) => {
     minPlugins.push(filesize());
   }
 
-  if (options.from && options.from === 'serve' && options.watch && options.reload) {
+  if (options.from &&
+    (options.from === 'serve' && options.watch && options.reload) ||
+    (options.from === 'test' && options.persistent)
+  ) {
+    const port = await randomPort();
+    const livereloadPlugin = livereload({
+      watch: ['src/**', `${dir}/**`],
+      exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
+      applyCSSLive: true,
+      delay: 1000,
+      port
+    });
+
     plugins.push(livereloadPlugin)
   }
 

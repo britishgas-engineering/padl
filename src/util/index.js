@@ -2,6 +2,17 @@ import findModules from 'find-node-modules';
 import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import net from 'net';
+
+const randomPort = () => {
+  return new Promise(function (resolve, reject) {
+    const server = net.createServer()
+      .listen(0, function () {
+        const port = server.address().port;
+        server.close(function () { resolve(port); });
+      }).on('error', reject);
+  });
+}
 
 const runCommand = (command) => {
   return new Promise((resolve, reject) => {
@@ -71,5 +82,6 @@ export {
   babelConfig,
   terserConfig,
   getConfigArgs,
-  getRightPathLocation
+  getRightPathLocation,
+  randomPort
 };

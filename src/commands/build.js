@@ -109,7 +109,10 @@ export default async (config) => {
 
   const styles = await createStyles(config, [autoprefixPlugin, cleanCSSPlugin]);
 
-  if (options.from && options.from === 'serve') {
+  if (options.from &&
+    (options.from === 'serve') ||
+    (options.from === 'test')
+  ) {
     watchStyles(config, [autoprefixPlugin, cleanCSSPlugin]);
   }
 

@@ -20,7 +20,10 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
     format: 'es'
   };
 
-  if (options.from && options.from === 'serve' && options.watch) {
+  if (options.from &&
+    (options.from === 'serve' && options.watch) ||
+    (options.from === 'test' && options.persistent)
+  ) {
     const watcher = watch({
       ...inputOptions,
       output: [outputOptions]

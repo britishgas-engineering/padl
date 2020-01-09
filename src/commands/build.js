@@ -71,7 +71,7 @@ export default async (config) => {
   ) {
     const port = await randomPort();
     const livereloadPlugin = livereload({
-      watch: ['src/**', `${dir}/**`],
+      watch: ['src/**'],
       exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
       applyCSSLive: true,
       delay: 1000,
@@ -101,7 +101,7 @@ export default async (config) => {
   }
 
   // Build components.min.js
-  await rollup([polyfillPath, componentsPath], mergedComponentsPath, {}, minPlugins);
+  await rollup([polyfillPath, componentsPath], mergedComponentsPath, options, minPlugins);
   // Build components.only.min.js
   await rollup(componentsPath, onlyComponentsPath, {}, [terser(terserConfig), cleanup(), resolve()]);
 
@@ -110,7 +110,7 @@ export default async (config) => {
   const styles = await createStyles(config, [autoprefixPlugin, cleanCSSPlugin]);
 
   if (options.from &&
-    (options.from === 'serve' && options.watch && options.reload) ||
+    (options.from === 'serve') ||
     (options.from === 'test' && options.persistent)
   ) {
     watchStyles(config, [autoprefixPlugin, cleanCSSPlugin]);

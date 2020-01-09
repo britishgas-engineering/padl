@@ -16,7 +16,6 @@ const watchStyles = (config, plugins) => {
   }
 };
 
-
 const copyFiles = (config, dir) => {
   if (config && config.static) {
     console.log('Copying files...');
@@ -51,6 +50,7 @@ const createStyles = (config, plugins) => {
 };
 
 const createModule = (config, styles, dir) => {
+
   return new Promise((resolve) => {
     const libraryPath = process.cwd();
     const templatePath = path.join(path.dirname(__filename), '..', '..');

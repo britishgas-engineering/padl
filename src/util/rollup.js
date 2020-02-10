@@ -1,5 +1,5 @@
 import {rollup, watch} from 'rollup';
-
+let cache;
 export default async (inputPaths, outputPath, options = {}, plugins = []) => {
   const warning = {
     onwarn(warning, warn) {
@@ -17,7 +17,8 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
 
   const outputOptions = {
     file: outputPath,
-    format: 'es'
+    format: 'es',
+    cache
   };
 
   if (options.from &&
@@ -37,6 +38,6 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
   }
 
   const bundle = await rollup(inputOptions);
-
+  cache = bundle.cache;
   await bundle.write(outputOptions);
 };

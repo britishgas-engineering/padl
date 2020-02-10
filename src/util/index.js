@@ -31,17 +31,18 @@ const babelConfig = {
   runtimeHelpers: true,
   presets: [
     ['@babel/preset-env', {
-      targets: {
-        browsers: ['last 2 versions'],
-        ie: 11
-      },
-      loose: true,
-      corejs: '3',
+      targets: ">0.25%",
+      loose: false,
+      corejs: 3,
+      modules: false,
+      spec: true,
+      forceAllTransforms: true,
       useBuiltIns: 'entry'
     }]
   ],
   plugins: [
-    "@babel/plugin-transform-spread"
+    "@babel/plugin-transform-spread",
+    "@babel/plugin-transform-arrow-functions",
   ]
 };
 

@@ -17,6 +17,7 @@ const watchStyles = (config, plugins) => {
 };
 
 const copyFiles = (config, dir) => {
+
   if (config && config.static) {
     console.log('Copying files...');
 
@@ -63,6 +64,9 @@ const createModule = (config, styles, dir) => {
 
     const es5Path = getRightPathLocation(path.join(webcomponent, 'custom-elements-es5-adapter.js'));
     const loaderPath = getRightPathLocation(path.join(webcomponent, 'webcomponents-loader.js'));
+    const bundles = getRightPathLocation(path.join(webcomponent, 'bundles'));
+
+    fs.copySync(bundles, `${dir}/bundles`);
 
     const fileData = fs.readFileSync(location, 'utf8');
     const es5 = fs.readFileSync(es5Path, 'utf8');

@@ -32,17 +32,13 @@ const babelConfig = {
   presets: [
     ['@babel/preset-env', {
       targets: ">0.25%",
-      loose: false,
+      loose: true,
       corejs: 3,
-      modules: false,
-      spec: true,
-      forceAllTransforms: true,
       useBuiltIns: 'entry'
     }]
   ],
   plugins: [
-    "@babel/plugin-transform-spread",
-    "@babel/plugin-transform-arrow-functions",
+    "@babel/plugin-transform-spread"
   ]
 };
 

@@ -33,7 +33,7 @@
     "less-plugin-autoprefix": "github:jholt1/less-plugin-autoprefix#master",
     "less-plugin-clean-css": "github:jholt1/less-plugin-clean-css#master",
     "minimist": "^1.2.0",
-    "rollup": "^1.14.2",
+    "rollup": "^1.20.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-less": "github:jholt1/rollup-plugin-less#compile",
     "rollup-plugin-livereload": "^1.0.3",

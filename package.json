@@ -32,7 +32,7 @@
     "less": "^3.9.0",
     "less-plugin-autoprefix": "github:jholt1/less-plugin-autoprefix#master",
     "less-plugin-clean-css": "github:jholt1/less-plugin-clean-css#master",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "rollup": "^1.14.2",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-less": "github:jholt1/rollup-plugin-less#compile",
@@ -42,7 +42,7 @@
     "rollup-plugin-nodent": "^0.2.2",
     "rollup-plugin-terser": "^5.1.1",
     "shelljs": "^0.8.3",
-    "write": "^1.0.3"
+    "write": "^2.0.0"
   },
   "bin": {
     "padl": "build/pattern.js"

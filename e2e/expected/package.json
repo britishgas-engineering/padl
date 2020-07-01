@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "padl test -h",
+    "test:p": "padl test -p",
     "start": "padl serve",
     "build": "padl build"
   },
@@ -15,7 +16,7 @@
     "@storybook/addon-viewport": "^5.2.5",
     "babel-loader": "^8.0.5",
     "lit-element": "^2.0.1",
-    "padl": "^1.0.0-alpha.3",
+    "padl": "^1.0.0-alpha.13",
     "wct-browser-legacy": "1.0.2",
     "web-component-tester": "6.9.2"
   }

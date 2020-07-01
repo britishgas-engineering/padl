@@ -36,11 +36,13 @@ export default async (config) => {
   const polyfillPath = `${dir}/polyfill.js`;
   const componentsPath = `${dir}/components.js`;
   const mergedComponentsPath = `${dir}/components.min.js`;
+  const modernComponentsPath = `${dir}/components.modern.min.js`;
   const onlyComponentsPath = `${dir}/only.components.min.js`;
 
   const polyInputs = [
     'node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js',
-    'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js'
+    'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+    `${cliPath}/lib/includes.js`
   ];
 
   let plugins = [
@@ -56,6 +58,17 @@ export default async (config) => {
 
   let minPlugins = [
     multiEntry(),
+    terser(terserConfig),
+    cleanup(),
+    resolve()
+  ];
+
+  const modernPlugins = [
+    multiEntry(),
+    less({
+      plugins: [autoprefixPlugin, cleanCSSPlugin],
+      output: false
+    }),
     terser(terserConfig),
     cleanup(),
     resolve()
@@ -102,8 +115,6 @@ export default async (config) => {
 
   // Build components.min.js
   await rollup([polyfillPath, componentsPath], mergedComponentsPath, options, minPlugins);
-  // Build components.only.min.js
-  await rollup(componentsPath, onlyComponentsPath, {}, [terser(terserConfig), cleanup(), resolve()]);
 
   await copyFiles(config, dir);
 
@@ -115,6 +126,16 @@ export default async (config) => {
   ) {
     watchStyles(config, [autoprefixPlugin, cleanCSSPlugin]);
   }
+
+  if (options.from && (options.from === 'serve')) {
+    return;
+  }
+
+  //Build components.modern.min.js
+  await rollup('src/**/component.js', modernComponentsPath, options, modernPlugins);
+
+  // Build components.only.min.js
+  await rollup(componentsPath, onlyComponentsPath, {format: 'iife'}, [terser(terserConfig), cleanup(), resolve()]);
 
   const name = await createModule(config, styles, dir);
   // Build {name}.min.js module

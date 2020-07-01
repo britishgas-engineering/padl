@@ -63,9 +63,14 @@ const createModule = (config, styles, dir) => {
 
     const es5Path = getRightPathLocation(path.join(webcomponent, 'custom-elements-es5-adapter.js'));
     const loaderPath = getRightPathLocation(path.join(webcomponent, 'webcomponents-loader.js'));
+    const bundles = getRightPathLocation(path.join(webcomponent, 'bundles'));
+    const incPolyPath = path.join(path.dirname(__filename), '..', 'lib', 'includes.js');
+
+    fs.copySync(bundles, `${dir}/bundles`);
 
     const fileData = fs.readFileSync(location, 'utf8');
-    const es5 = fs.readFileSync(es5Path, 'utf8');
+    const incPoly = fs.readFileSync(incPolyPath, 'utf8');
+    const es5 = `${fs.readFileSync(es5Path, 'utf8')}${incPoly}`;
     const loader = fs.readFileSync(loaderPath, 'utf8');
     const component = fs.readFileSync(path.join(libraryPath, dir, 'only.components.min.js'), 'utf8');
     let cssContent = '';
@@ -83,9 +88,9 @@ const createModule = (config, styles, dir) => {
     }
 
     const result = fileData
+      .replace(/_INSERT_COMPONENT_JS_/g, component)
       .replace(/_INSERT_ES5_ADAPTER_/g, es5)
       .replace(/_INSERT_WEBCOMPONENT_LOADER_/g, loader)
-      .replace(/_INSERT_COMPONENT_JS_/g, component)
       .replace(/_INSERT_NAME_/g, `${name}.?m?i?n?.js`)
       .replace(/_INLINE_STYLES_/g, cssContent);
 

@@ -31,12 +31,9 @@ const babelConfig = {
   runtimeHelpers: true,
   presets: [
     ['@babel/preset-env', {
-      targets: {
-        browsers: ['last 2 versions'],
-        ie: 11
-      },
+      targets: ">0.25%",
       loose: true,
-      corejs: '3',
+      corejs: 3,
       useBuiltIns: 'entry'
     }]
   ],

@@ -17,7 +17,8 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
 
   const outputOptions = {
     file: outputPath,
-    format: options.format || 'es'
+    format: options.format || 'es',
+    cache
   };
 
   if (options.from &&

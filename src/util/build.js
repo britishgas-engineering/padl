@@ -17,6 +17,7 @@ const watchStyles = (config, plugins) => {
 };
 
 const copyFiles = (config, dir) => {
+
   if (config && config.static) {
     console.log('Copying files...');
 

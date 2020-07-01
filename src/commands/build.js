@@ -1,10 +1,10 @@
 import rollup from '../util/rollup';
 import {babelConfig, terserConfig, randomPort} from '../util';
 import {terser} from 'rollup-plugin-terser';
-import resolve from '@rollup/plugin-node-resolve';
+import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import livereload from 'rollup-plugin-livereload';
-import multiEntry from '@rollup/plugin-multi-entry';
+import multiEntry from 'rollup-plugin-multi-entry';
 import less from 'rollup-plugin-less';
 import del from 'rollup-plugin-delete'
 import cleanup from 'rollup-plugin-cleanup';

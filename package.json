@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "description": "Develop pattern libraries with lit-element",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {
@@ -63,7 +63,7 @@
     "ava": "^2.4.0",
     "nyc": "^14.1.1",
     "sinon": "^7.5.0",
-    "@storybook/html": "5.3.19",
+    "@storybook/html": "^5.3.19",
     "variable-diff": "^2.0.1"
   },
   "ava": {

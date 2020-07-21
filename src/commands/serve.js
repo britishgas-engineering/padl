@@ -1,4 +1,4 @@
-import storybook from '@storybook/html/standalone';
+import isGlobal from 'is-installed-globally';
 import build from './build';
 
 export default async (config) => {
@@ -10,13 +10,19 @@ export default async (config) => {
 
   const port = options.port && parseInt(options.port) || 9001;
 
-  await build(options);
+  if (!isGlobal) {
+    const storybook = require('@storybook/html/standalone');
 
-  storybook({
-    mode: 'dev',
-    port,
-    staticDir: ['./dist'],
-    configDir: './.storybook',
-    ci: !options.open
-  })
+    await build(options);
+
+    storybook({
+      mode: 'dev',
+      port,
+      staticDir: ['./dist'],
+      configDir: './.storybook',
+      ci: !options.open
+    })
+  } else {
+    console.log('Please use PaDL locally to serve to get the correct version of Storybook');
+  }
 }

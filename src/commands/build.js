@@ -11,7 +11,6 @@ import cleanup from 'rollup-plugin-cleanup';
 import Autoprefix from 'less-plugin-autoprefix';
 import CleanCSS from 'less-plugin-clean-css';
 import filesize from 'rollup-plugin-filesize';
-import storybook from '@storybook/html/standalone';
 import path from 'path';
 import fs from 'fs-extra';
 
@@ -127,7 +126,7 @@ export default async (config) => {
     watchStyles(config, [autoprefixPlugin, cleanCSSPlugin]);
   }
 
-  if (options.from && (options.from === 'serve')) {
+  if (options.from && options.from === 'serve' && process.env.NODE_ENV !== 'production') {
     return;
   }
 
@@ -142,6 +141,8 @@ export default async (config) => {
   await rollup(`${dir}/${name}.js`, `${dir}/${name}.min.js`, {}, [terser(terserConfig), ...plugins]);
 
   if (options.storybook) {
+    const storybook = require('@storybook/html/standalone');
+
     // build static storybook
     console.log('Building Storybook...');
 

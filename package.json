@@ -41,6 +41,7 @@
     "find-node-modules": "2.0.0",
     "fs-extra": "8.1.0",
     "glob": "7.1.6",
+    "is-installed-globally": "^0.3.2",
     "less": "3.11.1",
     "less-plugin-autoprefix": "github:jholt1/less-plugin-autoprefix#master",
     "less-plugin-clean-css": "github:jholt1/less-plugin-clean-css#master",
@@ -63,7 +64,6 @@
     "ava": "^2.4.0",
     "nyc": "^14.1.1",
     "sinon": "^7.5.0",
-    "@storybook/html": "^5.3.19",
     "variable-diff": "^2.0.1"
   },
   "ava": {

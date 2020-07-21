@@ -127,7 +127,7 @@ export default async (config) => {
     watchStyles(config, [autoprefixPlugin, cleanCSSPlugin]);
   }
 
-  if (options.from && (options.from === 'serve')) {
+  if (options.from && (options.from === 'serve') && process.env.NODE_ENV !== 'production') {
     return;
   }
 

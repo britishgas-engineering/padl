@@ -29,6 +29,7 @@ const runCommand = (command) => {
 const babelConfig = {
   babelrc: false,
   runtimeHelpers: true,
+  compact: false,
   presets: [
     ['@babel/preset-env', {
       targets: ">0.25%",

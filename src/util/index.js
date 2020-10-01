@@ -45,8 +45,12 @@ const babelConfig = {
 
 const terserConfig = {
   output: {
-    comments: function() {
-      return false;
+    comments: function(node, comment) {
+      const {value, type} = comment;
+
+      if (type == "comment2") {
+        return /@version:/i.test(value);
+      }
     }
   }
 };

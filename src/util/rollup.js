@@ -1,6 +1,12 @@
 import {rollup, watch} from 'rollup';
+import fs from 'fs-extra';
+import path from 'path';
+
 let cache;
 export default async (inputPaths, outputPath, options = {}, plugins = []) => {
+  const libraryPath = process.cwd();
+  const packageVersion = JSON.parse(fs.readFileSync(path.join(libraryPath, 'package.json'), 'utf8')).version || 'unknown';
+  
   const warning = {
     onwarn(warning, warn) {
       if (warning.code === 'THIS_IS_UNDEFINED') return;
@@ -18,6 +24,7 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
   const outputOptions = {
     file: outputPath,
     format: options.format || 'es',
+    banner: `/* @version: ${packageVersion} */`,
     cache
   };
 

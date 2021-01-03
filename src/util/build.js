@@ -42,6 +42,12 @@ const createStyles = (config, plugins) => {
           filename: path.resolve(cssInput),
           plugins
       }, function(e, output) {
+
+        if (e) {
+          console.error(e);
+          return;
+        }
+
         fs.writeFileSync(cssOutput, output.css, 'utf8');
 
         return resolve(output.css);

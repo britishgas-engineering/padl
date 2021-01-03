@@ -7,7 +7,7 @@
   "scripts": {
     "test": "padl test -h",
     "test:p": "padl test -p",
-    "start": "padl serve",
+    "start": "NODE_ENV=development padl serve",
     "build": "padl build",
     "padl": "padl"
   },

@@ -1,4 +1,4 @@
-import { withKnobs, text } from '@storybook/addon-knobs/html';
+import { withKnobs, text } from '@storybook/addon-knobs';
 
 export default {
   title: 'DASH_NAME',

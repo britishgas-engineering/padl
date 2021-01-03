@@ -28,7 +28,7 @@ const runCommand = (command) => {
 
 const babelConfig = {
   babelrc: false,
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   compact: false,
   presets: [
     ['@babel/preset-env', {
@@ -39,7 +39,11 @@ const babelConfig = {
     }]
   ],
   plugins: [
-    "@babel/plugin-transform-spread"
+    "@babel/plugin-transform-spread",
+    ["@babel/plugin-transform-runtime", {
+      "regenerator": true,
+      "useESModules": true
+    }]
   ]
 };
 

@@ -1,4 +1,4 @@
-import { withKnobs, text } from '@storybook/addon-knobs/html';
+import { withKnobs, text } from '@storybook/addon-knobs';
 
 export default {
   title: 'DASH_NAME',
@@ -13,9 +13,7 @@ export const standard = () => {
   `;
 };
 
-standard.story = {
-  name: 'Standard',
-};
+standard.storyName = 'Standard';
 
 export const changePropValue = () => {
   const prop = text('prop', 'foo');
@@ -27,6 +25,4 @@ export const changePropValue = () => {
   `;
 };
 
-changePropValue.story = {
-  name: 'Change prop value',
-};
+changePropValue.storyName = 'Change prop value';

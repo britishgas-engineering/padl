@@ -1,19 +1,20 @@
 import rollup from '../util/rollup';
 import {babelConfig, terserConfig, randomPort} from '../util';
 import {terser} from 'rollup-plugin-terser';
-import resolve from 'rollup-plugin-node-resolve';
-import babel from 'rollup-plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import babel from '@rollup/plugin-babel';
 import livereload from 'rollup-plugin-livereload';
-import multiEntry from 'rollup-plugin-multi-entry';
-import less from 'rollup-plugin-less';
+import multiEntry from '@rollup/plugin-multi-entry';
+import commonjs from '@rollup/plugin-commonjs';
+// import less from 'rollup-plugin-less';
+import stylesPlugin from 'rollup-plugin-styles';
 import del from 'rollup-plugin-delete'
 import cleanup from 'rollup-plugin-cleanup';
 import Autoprefix from 'less-plugin-autoprefix';
 import CleanCSS from 'less-plugin-clean-css';
 import filesize from 'rollup-plugin-filesize';
-import storybook from '@storybook/html/standalone';
+import isGlobal from 'is-installed-globally';
 import path from 'path';
-import fs from 'fs-extra';
 
 import {
   copyFiles,
@@ -47,9 +48,11 @@ export default async (config) => {
 
   let plugins = [
     resolve(),
-    less({
-      plugins: [autoprefixPlugin, cleanCSSPlugin],
-      output: false
+    stylesPlugin({
+      less: {
+        plugins: [autoprefixPlugin, cleanCSSPlugin],
+        output: false
+      }
     }),
     multiEntry(),
     babel(babelConfig),
@@ -65,9 +68,11 @@ export default async (config) => {
 
   const modernPlugins = [
     multiEntry(),
-    less({
-      plugins: [autoprefixPlugin, cleanCSSPlugin],
-      output: false
+    stylesPlugin({
+      less: {
+        plugins: [autoprefixPlugin, cleanCSSPlugin],
+        output: false
+      }
     }),
     terser(terserConfig),
     cleanup(),
@@ -84,10 +89,9 @@ export default async (config) => {
   ) {
     const port = await randomPort();
     const livereloadPlugin = livereload({
-      watch: ['src/**'],
+      watch: [`${dir}/**`],
       exts: ['js', 'less', 'svg', 'png', 'jpg', 'gif', 'css'],
       applyCSSLive: true,
-      delay: 1000,
       port
     });
 
@@ -103,18 +107,16 @@ export default async (config) => {
   }
 
   console.log('Building files...');
+
   // Build polyfill.js
-  await rollup(polyInputs, polyfillPath, {}, [multiEntry(), resolve(), del({targets: `${dir}/**`})]);
+  await rollup(polyInputs, polyfillPath, {noWatch: true}, [multiEntry(), resolve(), del({ targets: `${dir}/**` })]);
 
   // Build component.js
-  await rollup([`${cliPath}/lib/runtime.js`, 'src/*/component.js'], componentsPath, options, plugins);
+  await rollup(['src/*/component.js'], componentsPath, options, [commonjs(), ...plugins]);
 
   if (options.from && options.from === 'analysis') {
     return;
   }
-
-  // Build components.min.js
-  await rollup([polyfillPath, componentsPath], mergedComponentsPath, options, minPlugins);
 
   await copyFiles(config, dir);
 
@@ -131,6 +133,9 @@ export default async (config) => {
     return;
   }
 
+  // Build components.min.js
+  await rollup([polyfillPath, componentsPath], mergedComponentsPath, options, minPlugins);
+
   //Build components.modern.min.js
   await rollup('src/**/component.js', modernComponentsPath, options, modernPlugins);
 
@@ -145,15 +150,27 @@ export default async (config) => {
     // build static storybook
     console.log('Building Storybook...');
 
-    await storybook({
-      mode: 'static',
-      outputDir: `${dir}/demo`,
-      configDir: '.storybook'
-    }).catch((e) => {
-      console.error(e);
-      process.exit(1);
-      return;
-    });
+    const errorMessage = 'Please use PaDL locally to serve to get the correct version of Storybook';
+    if (!isGlobal) {
+      try {
+        const storybook = require('@storybook/html/standalone');
+
+        await storybook({
+          mode: 'static',
+          outputDir: `${dir}/demo`,
+          configDir: '.storybook'
+        }).catch((e) => {
+          console.error(e);
+          process.exit(1);
+          return;
+        });
+      } catch (error) {
+        console.log(errorMessage, `Error: ${error}`);
+      }
+
+    } else {
+      console.log(errorMessage);
+    }
   }
 
   console.log('Finished building files...');

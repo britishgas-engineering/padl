@@ -2,9 +2,7 @@
 
 ## Installation
 
-```bash
-npm install -g padl
-```
+Use [npx](https://nodejs.dev/learn/the-npx-nodejs-package-runner) to run PaDL instead of installing globally.
 
 ## About
 
@@ -80,7 +78,7 @@ Commands:
 ### Create a new pattern library
 
 ```bash
-padl new [name]
+npx padl new [name]
 ```
 
 #### Options
@@ -96,11 +94,11 @@ Options:
  Inside your pattern library
 
  ```bash
-padl generate [component]
+npm run padl -- generate [component]
  ```
 
  ```bash
-padl g [component]
+npm run padl -- g [component]
  ```
 
  This will create a lit component and also generate the `story.js`, `styles.less` with the test files.
@@ -110,11 +108,11 @@ padl g [component]
 Inside your pattern library
 
  ```bash
-padl delete [component]
+npm run padl -- delete [component]
  ```
 
  ```bash
-padl d [component]
+npm run padl -- d [component]
  ```
 
 This will delete all the related files to the component including the test files.
@@ -124,7 +122,7 @@ This will delete all the related files to the component including the test files
 Inside your pattern library
 
 ```bash
-padl build
+npm run build
 ```
 
 #### Options
@@ -151,7 +149,7 @@ In your `dist` folder will find the `components.min.js`
  Inside your pattern library
 
  ```bash
-padl serve
+npm start
  ```
 
  This will generate a storybook of all your component stories at `localhost:9001`
@@ -204,8 +202,12 @@ Options:
 
  Inside your pattern library
 
+```bash
+npm t
+```
+
  ```bash
-padl test
+npm run padl -- test
  ```
 
  #### Options

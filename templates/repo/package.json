@@ -2,18 +2,20 @@
   "name": "REPO_NAME",
   "version": "1.0.0",
   "description": "Small description about REPO_NAME",
-  "keywords": ["web components", "polymer", "pattern library", "lit-element"],
+  "keywords": ["web components", "pattern library", "lit-element"],
   "license": "MIT",
   "scripts": {
     "test": "padl test -h",
     "test:p": "padl test -p",
-    "start": "padl serve",
-    "build": "padl build"
+    "start": "NODE_ENV=development padl serve",
+    "build": "padl build",
+    "padl": "padl"
   },
-  "devDependencies": {
-    "@storybook/addon-a11y": "^5.2.5",
-    "@storybook/addon-knobs": "^5.2.5",
-    "@storybook/addon-viewport": "^5.2.5",
+  "dependencies": {
+    "@storybook/addon-a11y": "^6.1.11",
+    "@storybook/addon-knobs": "^6.1.11",
+    "@storybook/addon-viewport": "^6.1.11",
+    "@storybook/html": "^6.1.11",
     "babel-loader": "^8.0.5",
     "lit-element": "^2.0.1",
     "padl": "^REPO_VERSION",

@@ -40,8 +40,7 @@ If we create a `hello-world` pattern library with a `primary-button` web compone
 To create this example:
 
 ```bash
- npm i -g padl
- padl new hello-world
+ npx padl new hello-world
  cd hello-world && npm i
  padl g primary-button
  padl build

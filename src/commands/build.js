@@ -49,6 +49,7 @@ export default async (config) => {
   let plugins = [
     resolve(),
     stylesPlugin({
+      mode: 'extract',
       less: {
         plugins: [autoprefixPlugin, cleanCSSPlugin],
         output: false
@@ -69,6 +70,7 @@ export default async (config) => {
   const modernPlugins = [
     multiEntry(),
     stylesPlugin({
+      mode: 'extract',
       less: {
         plugins: [autoprefixPlugin, cleanCSSPlugin],
         output: false
@@ -165,7 +167,7 @@ export default async (config) => {
           return;
         });
       } catch (error) {
-        console.log(errorMessage, `Error: ${error}`);
+        console.log(`Error: ${error}`);
       }
 
     } else {

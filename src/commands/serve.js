@@ -26,7 +26,7 @@ export default async (config) => {
         ci: !options.open
       });
     } catch (error) {
-      console.log(errorMessage, `Error: ${error}`);
+      console.log(`Error: ${error}`);
     }
     
   } else {

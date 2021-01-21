@@ -86,7 +86,7 @@ export default async (config) => {
   }
 
   if (options.from &&
-    (options.from === 'serve' && options.watch && options.reload) ||
+    (options.from === 'serve' && options.watch && options.reload && process.env.NODE_ENV !== 'production') ||
     (options.from === 'test' && options.persistent)
   ) {
     const port = await randomPort();

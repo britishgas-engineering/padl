@@ -83,12 +83,12 @@ const createModule = (config, styles, dir) => {
     let cssContent = '';
 
     if (styles && config.globalStyle && config.globalStyle.inline) {
-      const css = styles.replace(/"/g, "'").replace(/\\/g, '\\\\');
+      const css = styles.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
 
       cssContent = `
         const style = document.createElement('style');
         const ref = document.querySelector('script');
-        style.innerHTML = "${css}";
+        style.innerHTML = "${String.raw`${css}`}";
         style.title = "${name}-styles";
         ref.parentNode.insertBefore(style, ref);
         `;

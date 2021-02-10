@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "1.0.2",
+  "version": "2.0.0-alpha.1",
   "description": "Develop pattern libraries with lit-element",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {
@@ -47,7 +47,7 @@
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "is-installed-globally": "^0.3.2",
-    "less": "^3.12.2",
+    "less": "^4.1.1",
     "less-plugin-autoprefix": "github:jholt1/less-plugin-autoprefix#master",
     "less-plugin-clean-css": "github:jholt1/less-plugin-clean-css#master",
     "rollup": "^2.33.1",

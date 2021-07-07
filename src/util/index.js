@@ -64,7 +64,6 @@ const getRightPathLocation = (dir) => {
 
 export {
   runCommand,
-  babelConfig,
   terserConfig,
   getConfigArgs,
   getRightPathLocation,

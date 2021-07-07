@@ -1,5 +1,5 @@
 import rollup from '../util/rollup';
-import {babelConfig, terserConfig, randomPort} from '../util';
+import {terserConfig, randomPort} from '../util';
 import {terser} from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
@@ -24,7 +24,7 @@ import {
 } from '../util/build';
 
 const autoprefixPlugin = new Autoprefix({grid: true, overrideBrowserslist: ['last 2 versions']});
-const cleanCSSPlugin = new CleanCSS({advanced: true, compatibility: 'ie11', level: 2});
+const cleanCSSPlugin = new CleanCSS({advanced: true, level: 2});
 
 const cliPath = path.join(path.dirname(__filename), '..');
 const dir = 'dist';
@@ -56,7 +56,6 @@ export default async (config) => {
       }
     }),
     multiEntry(),
-    babel(babelConfig),
     cleanup()
   ];
 
@@ -136,7 +135,7 @@ export default async (config) => {
   }
 
   // Build components.min.js
-  await rollup([polyfillPath, componentsPath], mergedComponentsPath, options, minPlugins);
+  await rollup(componentsPath, mergedComponentsPath, options, minPlugins);
 
   //Build components.modern.min.js
   await rollup('src/**/component.js', modernComponentsPath, options, modernPlugins);

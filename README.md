@@ -52,7 +52,7 @@ To create this example:
 
   This will add all the polyfills, components, lit-element and can inline your global styles. This is in an effort to reduce the amount of blocking, while keeping the file as small as possible.
 
-  > Note: Our browser coverage is `last 2 browsers` + IE11.
+  > Note: Our browser coverage is `last 2 browsers`.
 
 ## How to
 

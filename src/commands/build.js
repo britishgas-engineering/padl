@@ -2,11 +2,9 @@ import rollup from '../util/rollup';
 import {terserConfig, randomPort} from '../util';
 import {terser} from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
-import babel from '@rollup/plugin-babel';
 import livereload from 'rollup-plugin-livereload';
 import multiEntry from '@rollup/plugin-multi-entry';
 import commonjs from '@rollup/plugin-commonjs';
-// import less from 'rollup-plugin-less';
 import stylesPlugin from 'rollup-plugin-styles';
 import del from 'rollup-plugin-delete'
 import cleanup from 'rollup-plugin-cleanup';
@@ -81,7 +79,8 @@ export default async (config) => {
   ];
 
   if (!options.from) {
-    minPlugins.push(filesize());
+    // @TODO: Need to understand why the filesize plugin breaks the build
+    // minPlugins.push(filesize());
   }
 
   if (options.from &&
@@ -110,7 +109,7 @@ export default async (config) => {
   console.log('Building files...');
 
   // Build polyfill.js
-  await rollup(polyInputs, polyfillPath, {noWatch: true}, [multiEntry(), resolve(), del({ targets: `${dir}/**` })]);
+  await rollup(polyInputs, polyfillPath, {noWatch: true}, [multiEntry(), resolve(), del({ targets: dir })]);
 
   // Build component.js
   await rollup(['src/*/component.js'], componentsPath, options, [commonjs(), ...plugins]);
@@ -145,7 +144,18 @@ export default async (config) => {
 
   const name = await createModule(config, styles, dir);
   // Build {name}.min.js module
-  await rollup(`${dir}/${name}.js`, `${dir}/${name}.min.js`, {}, [terser(terserConfig), ...plugins]);
+  await rollup(`${dir}/${name}.js`, `${dir}/${name}.min.js`, {}, [
+    resolve(),
+    stylesPlugin({
+      mode: 'extract',
+      less: {
+        plugins: [autoprefixPlugin, cleanCSSPlugin],
+        output: false
+      }
+    }),
+    terser(terserConfig),
+    cleanup()
+  ]);
 
   if (options.storybook) {
     // build static storybook

@@ -111,7 +111,7 @@ export default async (config) => {
   console.log('Building files...');
 
   // Build polyfill.js
-  await rollup(polyInputs, polyfillPath, {noWatch: true}, [multiEntry(), resolve(), del({ targets: `${dir}/**` })]);
+  await rollup(polyInputs, polyfillPath, {noWatch: true}, [multiEntry(), resolve(), del({ targets: dir })]);
 
   // Build component.js
   await rollup(['src/*/component.js'], componentsPath, options, [commonjs(), ...plugins]);

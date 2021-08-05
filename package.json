@@ -1,6 +1,6 @@
 {
   "name": "padl",
-  "version": "1.0.2",
+  "version": "1.0.3-0",
   "description": "Develop pattern libraries with lit-element",
   "homepage": "https://github.com/britishgas-engineering/padl",
   "bug": {

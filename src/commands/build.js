@@ -1,5 +1,5 @@
 import rollup from '../util/rollup';
-import {terserConfig, randomPort} from '../util';
+import {babelConfig, terserConfig, randomPort} from '../util';
 import {terser} from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
@@ -54,6 +54,7 @@ export default async (config) => {
       }
     }),
     multiEntry(),
+    babel(babelConfig),
     cleanup()
   ];
 
@@ -79,8 +80,7 @@ export default async (config) => {
   ];
 
   if (!options.from) {
-    // @TODO: Need to understand why the filesize plugin breaks the build
-    // minPlugins.push(filesize());
+    minPlugins.push(filesize());
   }
 
   if (options.from &&
@@ -144,18 +144,7 @@ export default async (config) => {
 
   const name = await createModule(config, styles, dir);
   // Build {name}.min.js module
-  await rollup(`${dir}/${name}.js`, `${dir}/${name}.min.js`, {}, [
-    resolve(),
-    stylesPlugin({
-      mode: 'extract',
-      less: {
-        plugins: [autoprefixPlugin, cleanCSSPlugin],
-        output: false
-      }
-    }),
-    terser(terserConfig),
-    cleanup()
-  ]);
+  await rollup(`${dir}/${name}.js`, `${dir}/${name}.min.js`, {}, [terser(terserConfig), ...plugins]);
 
   if (options.storybook) {
     // build static storybook

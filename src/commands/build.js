@@ -6,7 +6,6 @@ import babel from '@rollup/plugin-babel';
 import livereload from 'rollup-plugin-livereload';
 import multiEntry from '@rollup/plugin-multi-entry';
 import commonjs from '@rollup/plugin-commonjs';
-// import less from 'rollup-plugin-less';
 import stylesPlugin from 'rollup-plugin-styles';
 import del from 'rollup-plugin-delete'
 import cleanup from 'rollup-plugin-cleanup';
@@ -24,7 +23,7 @@ import {
 } from '../util/build';
 
 const autoprefixPlugin = new Autoprefix({grid: true, overrideBrowserslist: ['last 2 versions']});
-const cleanCSSPlugin = new CleanCSS({advanced: true, compatibility: 'ie11', level: 2});
+const cleanCSSPlugin = new CleanCSS({advanced: true, level: 2});
 
 const cliPath = path.join(path.dirname(__filename), '..');
 const dir = 'dist';
@@ -136,7 +135,7 @@ export default async (config) => {
   }
 
   // Build components.min.js
-  await rollup([polyfillPath, componentsPath], mergedComponentsPath, options, minPlugins);
+  await rollup(componentsPath, mergedComponentsPath, options, minPlugins);
 
   //Build components.modern.min.js
   await rollup('src/**/component.js', modernComponentsPath, options, modernPlugins);

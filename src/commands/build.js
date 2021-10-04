@@ -22,7 +22,7 @@ import {
   watchStyles
 } from '../util/build';
 
-const autoprefixPlugin = new Autoprefix({grid: true, overrideBrowserslist: ['last 2 versions']});
+const autoprefixPlugin = new Autoprefix({ grid: true, overrideBrowserslist: ['>0.25%, not dead, not IE 11'] });
 const cleanCSSPlugin = new CleanCSS({advanced: true, level: 2});
 
 const cliPath = path.join(path.dirname(__filename), '..');

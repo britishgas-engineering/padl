@@ -68,14 +68,11 @@ const createModule = (config, styles, dir) => {
 
     fs.copySync(templateIndexPath, location);
 
-    const loaderPath = getRightPathLocation(path.join(webcomponent, 'webcomponents-loader.js'));
     const bundles = getRightPathLocation(path.join(webcomponent, 'bundles'));
-    const incPolyPath = path.join(path.dirname(__filename), '..', 'lib', 'includes.js');
 
     fs.copySync(bundles, `${dir}/bundles`);
 
     const fileData = fs.readFileSync(location, 'utf8');
-    const loader = fs.readFileSync(loaderPath, 'utf8');
     const component = fs.readFileSync(path.join(libraryPath, dir, 'only.components.min.js'), 'utf8');
     let cssContent = '';
 

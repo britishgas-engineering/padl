@@ -35,7 +35,7 @@ export default async (config) => {
 
   const polyfillPath = `${dir}/polyfill.js`;
   const componentsPath = `${dir}/components.js`;
-  const componentsDir = `${dir}/components`;
+  const componentsDir = `${dir}/components/index.js`;
   const mergedComponentsPath = `${dir}/components.min.js`;
   const modernComponentsPath = `${dir}/components.modern.min.js`;
   const onlyComponentsPath = `${dir}/only.components.min.js`;
@@ -81,6 +81,18 @@ export default async (config) => {
     resolve()
   ];
 
+  const compPlugins = [
+    multiEntry(),
+    resolve(),
+    stylesPlugin({
+      mode: 'extract',
+      less: {
+        plugins: [autoprefixPlugin, cleanCSSPlugin],
+        output: false
+      }
+    }),
+  ];
+
   if (!options.from) {
     minPlugins.push(filesize());
   }
@@ -121,7 +133,7 @@ export default async (config) => {
   }
 
   if (options.components) {
-    await rollup(['src/*/component.js'], componentsDir, {...options, separate: true}, [commonjs(), ...plugins]);
+    await rollup('src/*/*[^story].js', componentsDir, { ...options }, compPlugins);
   }
 
   await copyFiles(config, dir);

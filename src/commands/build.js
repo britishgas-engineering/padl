@@ -35,6 +35,7 @@ export default async (config) => {
 
   const polyfillPath = `${dir}/polyfill.js`;
   const componentsPath = `${dir}/components.js`;
+  const componentsDir = `${dir}/components`;
   const mergedComponentsPath = `${dir}/components.min.js`;
   const modernComponentsPath = `${dir}/components.modern.min.js`;
   const onlyComponentsPath = `${dir}/only.components.min.js`;
@@ -117,6 +118,10 @@ export default async (config) => {
 
   if (options.from && options.from === 'analysis') {
     return;
+  }
+
+  if (options.components) {
+    await rollup(['src/*/component.js'], componentsDir, {...options, separate: true}, [commonjs(), ...plugins]);
   }
 
   await copyFiles(config, dir);

@@ -23,8 +23,10 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
     ...warning
   };
 
+  const outputLocation = options.separate ? 'dir' : 'file';
+
   const outputOptions = {
-    file: outputPath,
+    [outputLocation]: outputPath,
     format: options.format || 'es',
     banner: `/* @version: ${packageVersion} */`,
   };

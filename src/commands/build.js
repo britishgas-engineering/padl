@@ -35,7 +35,7 @@ export default async (config) => {
 
   const polyfillPath = `${dir}/polyfill.js`;
   const componentsPath = `${dir}/components.js`;
-  const componentsDir = `${dir}/components/index.js`;
+  const componentsDir = `${dir}/components`;
   const mergedComponentsPath = `${dir}/components.min.js`;
   const modernComponentsPath = `${dir}/components.modern.min.js`;
   const onlyComponentsPath = `${dir}/only.components.min.js`;
@@ -82,7 +82,7 @@ export default async (config) => {
   ];
 
   const compPlugins = [
-    multiEntry(),
+    multiEntry({ entryFileName: 'index.js' }),
     resolve(),
     stylesPlugin({
       mode: 'extract',
@@ -133,7 +133,7 @@ export default async (config) => {
   }
 
   if (options.components) {
-    await rollup('src/*/*[^story].js', componentsDir, { ...options }, compPlugins);
+    await rollup('src/index.js', componentsDir, { ...options, separate: true }, compPlugins);
   }
 
   await copyFiles(config, dir);

@@ -29,6 +29,7 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
     [outputLocation]: outputPath,
     format: options.format || 'es',
     banner: `/* @version: ${packageVersion} */`,
+    preserveModules: options.separate
   };
 
   if (!options.noWatch &&

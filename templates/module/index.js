@@ -3,5 +3,7 @@
 
   //_INLINE_STYLES_
 
-  _INSERT_COMPONENT_JS_
+  document.addEventListener("DOMContentLoaded", () => {
+    _INSERT_COMPONENT_JS_
+  });
 }());

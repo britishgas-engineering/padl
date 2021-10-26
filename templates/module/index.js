@@ -3,7 +3,9 @@
 
   //_INLINE_STYLES_
 
-  document.addEventListener("DOMContentLoaded", () => {
-    _INSERT_COMPONENT_JS_
-  });
+  document.onreadystatechange = function () {
+    if (document.readyState === 'complete') {
+      _INSERT_COMPONENT_JS_
+    }
+  };
 }());

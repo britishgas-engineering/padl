@@ -22,7 +22,7 @@ import {
   watchStyles
 } from '../util/build';
 
-const autoprefixPlugin = new Autoprefix({grid: true, overrideBrowserslist: ['last 2 versions']});
+const autoprefixPlugin = new Autoprefix({ grid: true, overrideBrowserslist: ['>0.25%, not dead, not IE 11'] });
 const cleanCSSPlugin = new CleanCSS({advanced: true, level: 2});
 
 const cliPath = path.join(path.dirname(__filename), '..');
@@ -35,6 +35,7 @@ export default async (config) => {
 
   const polyfillPath = `${dir}/polyfill.js`;
   const componentsPath = `${dir}/components.js`;
+  const componentsDir = `${dir}/components`;
   const mergedComponentsPath = `${dir}/components.min.js`;
   const modernComponentsPath = `${dir}/components.modern.min.js`;
   const onlyComponentsPath = `${dir}/only.components.min.js`;
@@ -80,6 +81,18 @@ export default async (config) => {
     resolve()
   ];
 
+  const compPlugins = [
+    multiEntry({ entryFileName: 'index.js' }),
+    resolve(),
+    stylesPlugin({
+      mode: 'extract',
+      less: {
+        plugins: [autoprefixPlugin, cleanCSSPlugin],
+        output: false
+      }
+    }),
+  ];
+
   if (!options.from) {
     minPlugins.push(filesize());
   }
@@ -117,6 +130,10 @@ export default async (config) => {
 
   if (options.from && options.from === 'analysis') {
     return;
+  }
+
+  if (options.components) {
+    await rollup('src/index.js', componentsDir, { ...options, separate: true }, compPlugins);
   }
 
   await copyFiles(config, dir);

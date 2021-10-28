@@ -16,6 +16,7 @@ program
   .command('build')
   .description('Build padl web component files')
   .option('--storybook', 'Creates static storybook with build')
+  .option('--components', 'Builds components individually')
   .action((options) => {
     const config = {
       ...getConfigArgs(),

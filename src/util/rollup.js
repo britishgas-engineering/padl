@@ -16,17 +16,20 @@ export default async (inputPaths, outputPath, options = {}, plugins = []) => {
 
   const inputOptions = {
     // external: [/@babel\/runtime/],
-    treeshake: true,
+    treeshake: !options.separate,
     input: inputPaths,
     plugins,
     cache: cache[outputPath],
     ...warning
   };
 
+  const outputLocation = options.separate ? 'dir' : 'file';
+
   const outputOptions = {
-    file: outputPath,
+    [outputLocation]: outputPath,
     format: options.format || 'es',
     banner: `/* @version: ${packageVersion} */`,
+    preserveModules: options.separate
   };
 
   if (!options.noWatch &&

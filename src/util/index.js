@@ -32,14 +32,13 @@ const babelConfig = {
   compact: false,
   presets: [
     ['@babel/preset-env', {
-      targets: ">0.25%",
+      targets: ">0.25%, not dead, not IE 11",
       loose: true,
       corejs: 3,
       useBuiltIns: 'entry'
     }]
   ],
   plugins: [
-    "@babel/plugin-transform-spread",
     ["@babel/plugin-transform-runtime", {
       "regenerator": true,
       "useESModules": true

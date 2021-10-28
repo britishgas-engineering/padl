@@ -3,9 +3,15 @@
 
   //_INLINE_STYLES_
 
-  document.onreadystatechange = function () {
-    if (document.readyState === 'complete') {
-      _INSERT_COMPONENT_JS_
-    }
-  };
+  function loadComponents() {
+    _INSERT_COMPONENT_JS_
+  }
+
+  if (document.readyState == 'loading') {
+    // still loading, wait for the event
+    document.addEventListener('DOMContentLoaded', loadComponents);
+  } else {
+    // DOM is ready!
+    loadComponents();
+  }
 }());
